@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="sl" class="no-js is-loading">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sorrel — kuhinja na ognju in kavarna, Ljubljana</title>
+<meta name="description" content="Sorrel je kuhinja na ognju in celodnevna kavarna ob reki v Ljubljani. Sezonske jedi, pripravljene na hrastovem žaru, naravna vina in dolgi večeri.">
+<meta name="theme-color" content="#0F1F1A">
+<script>document.documentElement.classList.replace('no-js','js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   SORREL — Kitchen & Café
+   Single-file site. To use real photography, set data-src="path/to.jpg"
+   on any element with class="media" (see “IMAGES” note in the script).
+   ===================================================================== */
+
+:root{
+  /* dark-luxury rhythm: --pine (black) > --graphite (charcoal) > --ink (near-black) > --bone-2 (graphite surface) > --moss (image backdrop) */
+  --pine:#0B0A08; --pine-2:#16302A; --moss:#201B15; --graphite:#1C1712;
+  --bone:#EFE8DA; --bone-2:#292219; --paper:#F7F2E8;
+  --persimmon:#E2632F; --brick:#B93A16; --saffron:#E3AE45; --clay:#C98E6E;
+  --ink:#100E0B;
+  --serif:'Instrument Serif','Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+  --sans:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.77,0,.18,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --gutter:clamp(20px,4.2vw,68px);
+  --r:clamp(28px,5vw,76px);
+}
+
+/* ---------- Base ---------- */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:auto;scrollbar-gutter:stable}
+html.is-loading,html.is-locked{overflow:hidden}
+body{
+  font-family:var(--sans);font-size:clamp(16px,1.02vw,18px);line-height:1.62;font-weight:400;
+  color:var(--bone);background:var(--pine);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+main{position:relative;z-index:2;overflow-x:clip}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+ul{list-style:none}
+em{font-style:italic}
+::selection{background:var(--persimmon);color:var(--pine)}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:3px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-80px;z-index:2000;background:var(--bone);color:var(--pine);padding:.8em 1.2em;border-radius:99px;transition:top .3s}
+.skip:focus{top:16px}
+
+/* film grain — gives flat colour and placeholders a photographic tooth */
+body::after{
+  content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.22;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- Typography helpers ---------- */
+.label{font:500 .72rem/1.2 var(--sans);letter-spacing:.2em;text-transform:uppercase}
+.label i{font-style:normal;opacity:.55;margin-right:.9em}
+.h2{font:400 clamp(2.7rem,6.4vw,7rem)/.94 var(--serif);letter-spacing:-.025em}
+.h2 em{color:var(--em,inherit)}
+.lede{font-size:clamp(1rem,1.15vw,1.2rem);line-height:1.65;max-width:44ch;opacity:.82}
+.wrap{width:100%;max-width:1680px;margin-inline:auto;padding-inline:var(--gutter)}
+.g12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(14px,2vw,32px)}
+
+/* split-word reveal */
+.w{display:inline-block;overflow-x:visible;overflow-y:clip;vertical-align:top;padding:.12em .06em .16em;margin:-.12em -.06em -.16em}
+.w>span{display:inline-block;transition:transform 1.15s var(--ease-out);transition-delay:calc(var(--d,0)*1ms + var(--wi,0)*38ms)}
+.js [data-words] .w>span{transform:translateY(115%)}
+.js [data-words].is-in .w>span{transform:none}
+.ln{display:block}
+
+/* generic fade-up */
+.js [data-reveal]{opacity:0;transform:translate3d(0,38px,0);transition:opacity 1.1s var(--ease-out),transform 1.3s var(--ease-out);transition-delay:calc(var(--d,0)*1ms)}
+.js [data-reveal].is-in{opacity:1;transform:none}
+
+/* ---------- Media (images / placeholders) ---------- */
+.frame{position:relative;overflow:hidden;background:var(--moss)}
+.media{position:absolute;inset:0;overflow:hidden;background:var(--moss);clip-path:inset(0 0 0 0);transition:clip-path 1.6s var(--ease)}
+.js .media:not([data-noreveal]){clip-path:inset(100% 0 0 0)}
+.js .media.is-in{clip-path:inset(0 0 0 0)}
+.media__par{position:absolute;inset:0}
+.media[data-par] .media__par{inset:-10% 0;will-change:transform}
+.media__in{position:absolute;inset:0;transition:transform 1.9s var(--ease-out)}
+.js .media:not([data-noreveal]) .media__in{transform:scale(1.3)}
+.js .media.is-in .media__in{transform:scale(1)}
+.media__in>svg,.media__in>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.media__in::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 38%,transparent 52%,rgba(0,0,0,.30)),linear-gradient(180deg,transparent 62%,rgba(0,0,0,.16))}
+.js .hz:hover .media.is-in .media__in,.js .hz:hover .media[data-noreveal] .media__in{transform:scale(1.06);transition-duration:1.3s}
+.arch{border-radius:999px 999px 0 0}
+
+/* ---------- Buttons ---------- */
+.btn{
+  --bg:var(--brick);--fg:var(--bone);--hbg:var(--bone);--hfg:var(--pine);
+  position:relative;display:inline-flex;align-items:center;gap:.85em;padding:1.1em 1.75em;border-radius:999px;
+  font:500 .78rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
+  color:var(--fg);background:var(--bg);overflow:hidden;isolation:isolate;
+  transition:color .55s var(--ease-out),transform .6s var(--ease-out),box-shadow .5s;
+}
+.btn::before{content:"";position:absolute;left:50%;top:50%;width:130%;aspect-ratio:1;border-radius:50%;background:var(--hbg);
+  transform:translate(-50%,-10%) scale(0);transition:transform .7s var(--ease-out);z-index:-1}
+.btn:hover,.btn:focus-visible{color:var(--hfg)}
+.btn:hover::before,.btn:focus-visible::before{transform:translate(-50%,-50%) scale(1)}
+.btn__arr{width:1.15em;height:1.15em;flex:none;transition:transform .6s var(--ease-out)}
+.btn:hover .btn__arr{transform:translateX(5px)}
+.btn--ghost{--bg:transparent;--fg:currentColor;box-shadow:inset 0 0 0 1px rgba(239,232,218,.38)}
+.btn--bone{--bg:var(--bone);--fg:var(--pine);--hbg:var(--persimmon);--hfg:var(--pine)}
+.btn--pine{--bg:var(--bone);--fg:var(--graphite);--hbg:var(--persimmon);--hfg:var(--bone)}
+.btn--lg{padding:1.35em 2.2em;font-size:.84rem}
+/* while a magnetic element is actively tracking the cursor, only the transform
+   catches up quickly (so the pull feels tight, not laggy) — the release back to
+   rest still uses each element's own slower, softer transition */
+[data-magnetic].is-magnet{transition-duration:.32s}
+.link{position:relative;display:inline-flex;align-items:center;gap:.7em;font:500 .78rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding-bottom:.6em}
+.link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform-origin:right;transition:transform .7s var(--ease-out)}
+.link:hover::after{transform:scaleX(0);transform-origin:right}
+.link::before{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease-out) .25s}
+.link:hover::before{transform:scaleX(1)}
+
+/* rolling text (nav links) */
+.roll{position:relative;display:inline-block;overflow:hidden;height:1.25em;line-height:1.25}
+.roll span{display:block;position:relative;transition:transform .6s var(--ease-out)}
+.roll span::after{content:attr(data-t);position:absolute;left:0;top:100%}
+.roll:hover span,.roll:focus-visible span{transform:translateY(-100%)}
+
+/* ---------- Loader ---------- */
+.loader{position:fixed;inset:0;z-index:1000;background:var(--pine);color:var(--bone);display:flex;flex-direction:column;justify-content:space-between;
+  padding:clamp(22px,4vw,44px) var(--gutter);transition:transform 1.25s var(--ease)}
+.loader::after{content:"";position:absolute;left:-8%;right:-8%;top:100%;height:12vh;background:var(--pine);border-radius:0 0 50% 50%/0 0 100% 100%}
+body.is-loaded .loader{transform:translateY(-115%)}
+.loader__top,.loader__bot{display:flex;justify-content:space-between;align-items:flex-end;transition:opacity .5s,transform .8s var(--ease)}
+body.is-loaded .loader__top,body.is-loaded .loader__bot,body.is-loaded .loader__word{opacity:0;transform:translateY(-24px)}
+.loader__word{font:400 clamp(5rem,20vw,17rem)/.85 var(--serif);letter-spacing:-.035em;display:flex;align-self:center;transition:opacity .5s,transform .8s var(--ease)}
+.loader__word span{display:block;overflow-x:visible;overflow-y:clip;padding:.06em .01em .14em}
+.loader__word b{display:block;font-weight:400;transform:translateY(112%);animation:rise 1.3s var(--ease-out) forwards;animation-delay:calc(var(--i)*.07s + .15s)}
+.loader__word i{color:var(--persimmon)}
+.loader__count{font:400 clamp(2.4rem,5vw,4.4rem)/1 var(--serif);font-variant-numeric:tabular-nums}
+.loader__bar{position:absolute;left:var(--gutter);right:var(--gutter);bottom:calc(clamp(22px,4vw,44px) + clamp(48px,6vw,80px));height:1px;background:rgba(239,232,218,.16)}
+.loader__bar i{position:absolute;inset:0;background:var(--persimmon);transform:scaleX(0);transform-origin:left}
+@keyframes rise{to{transform:none}}
+
+/* ---------- Progress + cursor ---------- */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:110;background:var(--persimmon);transform:scaleX(0);transform-origin:left;pointer-events:none}
+.cursor{position:fixed;left:0;top:0;z-index:9999;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;pointer-events:none;
+  background:var(--bone);mix-blend-mode:difference;opacity:0;display:grid;place-items:center;
+  transition:width .5s var(--ease-out),height .5s var(--ease-out),margin .5s var(--ease-out),background .4s,opacity .3s}
+.cursor.is-on{opacity:1}
+.cursor span{font:500 .68rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--pine);opacity:0;transition:opacity .3s}
+.cursor.is-link{width:44px;height:44px;margin:-22px 0 0 -22px}
+.cursor.is-label{width:92px;height:92px;margin:-46px 0 0 -46px;background:var(--bone);mix-blend-mode:normal}
+.cursor.is-label span{opacity:1}
+@media (hover:none),(pointer:coarse){.cursor{display:none}}
+
+/* ---------- Navigation ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  --nfg:var(--bone);--nbg:rgba(11,10,8,.74);--pill:var(--bone);--pillfg:var(--pine);
+  color:var(--nfg);transition:transform .8s var(--ease),color .5s}
+.nav.is-light{--nfg:var(--ink);--nbg:rgba(239,232,218,.8);--pill:var(--pine);--pillfg:var(--bone)}
+.nav.is-hidden{transform:translateY(-105%)}
+body.menu-open .nav{--nfg:var(--bone);transform:none}
+.nav__bar{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px var(--gutter);
+  transition:padding .6s var(--ease-out),background .6s,backdrop-filter .6s}
+.js .nav__bar{opacity:0}
+.js .is-loaded .nav__bar{animation:fadeDown 1.2s var(--ease-out) 1.15s both}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+.nav.is-stuck .nav__bar{padding-block:14px;background:var(--nbg);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2)}
+body.menu-open .nav__bar{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+.logo{display:inline-flex;align-items:center;gap:.55rem;font:400 2rem/1 var(--serif);letter-spacing:-.015em;position:relative;z-index:2}
+.logo svg{width:22px;height:22px;color:var(--persimmon)}
+.nav__links{display:none;gap:clamp(1.4rem,2.4vw,2.6rem);font:500 .74rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.nav__act{display:flex;align-items:center;gap:clamp(12px,1.6vw,26px)}
+.nav__pill{display:none;padding:.95em 1.5em;border-radius:99px;background:var(--pill);color:var(--pillfg);font:500 .72rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;
+  transition:background .4s,color .4s,transform .5s var(--ease-out)}
+.nav__pill:hover{background:var(--persimmon);color:var(--pine)}
+body.menu-open .nav__pill{background:var(--bone);color:var(--pine)}
+.burger{display:inline-flex;align-items:center;gap:.9rem;padding:.3rem 0}
+.burger__txt{display:block;height:1.2em;overflow:hidden;font:500 .74rem/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.burger__txt span{display:block;transition:transform .7s var(--ease-out)}
+body.menu-open .burger__txt span{transform:translateY(-100%)}
+.burger__ic{position:relative;width:46px;height:46px;border-radius:50%;box-shadow:inset 0 0 0 1px currentColor;opacity:.9;transition:transform .7s var(--ease-out),background .4s}
+.burger:hover .burger__ic{background:rgba(127,127,127,.18);transform:scale(1.06)}
+.burger__ic i{position:absolute;left:14px;right:14px;top:50%;height:1.5px;background:currentColor;transition:transform .7s var(--ease-out)}
+.burger__ic i:nth-child(1){transform:translateY(-4px)}
+.burger__ic i:nth-child(2){transform:translateY(4px)}
+body.menu-open .burger__ic i:nth-child(1){transform:rotate(45deg)}
+body.menu-open .burger__ic i:nth-child(2){transform:rotate(-45deg)}
+@media(min-width:600px){.nav__pill{display:inline-block}}
+@media(min-width:1120px){.nav__links{display:flex;position:absolute;left:50%;transform:translateX(-50%)}}
+
+
+/* ---------- Language switcher ---------- */
+.lang{display:inline-flex;align-items:center;gap:.65rem;font:500 .72rem/1 var(--sans);letter-spacing:.16em}
+.lang__b{position:relative;padding:.55rem .05rem;opacity:.48;transition:opacity .45s var(--ease-out)}
+.lang__b::after{content:"";position:absolute;left:0;right:0;bottom:.2rem;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease-out)}
+.lang__b:hover{opacity:.85}
+.lang__b.is-active{opacity:1}
+.lang__b.is-active::after{transform:scaleX(1)}
+.lang__sep{width:1px;height:11px;background:currentColor;opacity:.3}
+
+/* ---------- Full-screen menu ---------- */
+.mo{position:fixed;inset:0;z-index:90;background:var(--pine);color:var(--bone);visibility:hidden;
+  clip-path:circle(0 at calc(100% - 56px) 44px);transition:clip-path 1.1s var(--ease),visibility 0s 1.1s;
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(24px,5vw,90px);
+  padding:clamp(96px,15vh,150px) var(--gutter) clamp(22px,4vh,40px);overflow:hidden}
+body.menu-open .mo{visibility:visible;clip-path:circle(150% at calc(100% - 56px) 44px);transition:clip-path 1.1s var(--ease),visibility 0s}
+.mo__glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(50% 60% at 85% 20%,rgba(226,99,47,.2),transparent 70%)}
+.mo__list{position:relative;display:flex;flex-direction:column;justify-content:center}
+.mo__list li{overflow:hidden;border-top:1px solid rgba(239,232,218,.12)}
+.mo__list li:last-child{border-bottom:1px solid rgba(239,232,218,.12)}
+.mo__list a{display:flex;align-items:baseline;gap:1.3rem;padding:.12em 0 .16em;font:400 min(5.4vw,8.6vh)/1.04 var(--serif);letter-spacing:-.02em;transition:opacity .5s,padding .7s var(--ease-out),color .5s}
+.mo__list .n{font:500 .7rem/1 var(--sans);letter-spacing:.16em;opacity:.5;min-width:2rem}
+.mo__list .t{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--ease-out)}
+body.menu-open .mo__list .t{transform:none;transition-delay:calc(.3s + var(--i)*.07s)}
+.mo__list:hover a{opacity:.32}
+.mo__list a:hover{opacity:1;padding-left:1.4rem;color:var(--saffron);font-style:italic}
+.mo__side{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-height:0}
+.mo__stage{position:relative;flex:1;min-height:0;max-height:62vh;border-radius:999px 999px 0 0;overflow:hidden;background:var(--moss)}
+.mo__stage .media{opacity:0;transform:scale(1.06);transition:opacity .8s,transform 1.4s var(--ease-out)}
+.mo__stage .media.is-active{opacity:1;transform:none}
+.mo__info{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;font-size:.92rem;opacity:0;transform:translateY(20px);transition:opacity .8s .7s,transform 1s var(--ease-out) .7s}
+body.menu-open .mo__info{opacity:1;transform:none}
+.mo__info p{opacity:.75;max-width:30ch}
+.mo__status{display:inline-flex;align-items:center;gap:.6em;font:500 .72rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.dot{width:8px;height:8px;border-radius:50%;background:#7bd18a;box-shadow:0 0 0 0 rgba(123,209,138,.6);animation:pulse 2.6s infinite}
+.dot.is-closed{background:var(--persimmon);animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(123,209,138,0)}100%{box-shadow:0 0 0 0 rgba(123,209,138,0)}}
+@media(max-width:899px){.mo{grid-template-columns:1fr;align-content:center}.mo__stage{display:none}.mo__list a{font-size:min(11vw,8vh)}.mo__side{justify-content:flex-end}}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;height:calc(100vh + var(--r));height:calc(100svh + var(--r));min-height:660px;background:var(--pine);color:var(--bone);overflow:hidden;isolation:isolate;--top:clamp(92px,15vh,150px);--bot:calc(clamp(74px,11vh,112px) + var(--r))}
+.hero__glow{position:absolute;inset:0;z-index:-1;background:
+  radial-gradient(55% 60% at 76% 42%,rgba(226,99,47,.24),transparent 70%),
+  radial-gradient(40% 40% at 8% 92%,rgba(227,174,69,.10),transparent 70%)}
+.hero__rings{position:absolute;right:-12vw;top:50%;width:70vw;aspect-ratio:1;translate:0 -50%;z-index:-1;opacity:.5;pointer-events:none}
+.hero__rings i{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(239,232,218,.07)}
+.hero__rings i:nth-child(2){inset:9%}.hero__rings i:nth-child(3){inset:18%}.hero__rings i:nth-child(4){inset:27%}
+.hero__arch{position:absolute;right:clamp(20px,7.4vw,130px);top:var(--top);bottom:var(--bot);width:clamp(250px,32vw,560px);will-change:transform}
+.hero__arch-in{position:absolute;inset:0;transform:translate3d(calc(var(--mx,0)*-16px),calc(var(--my,0)*-10px),0)}
+.hero__arch .frame{position:absolute;inset:0;border-radius:999px 999px 0 0}
+.hero__arch::before{content:"";position:absolute;inset:-14px;border:1px solid rgba(239,232,218,.26);border-radius:999px 999px 0 0;
+  clip-path:inset(100% 0 0 0);transition:clip-path 2s var(--ease) .1s}
+.hero__arch.is-in::before{clip-path:inset(0 0 0 0)}
+.hero__disc{position:absolute;left:-19%;top:52%;width:44%;aspect-ratio:1;transform:translate3d(calc(var(--mx,0)*30px),calc(var(--my,0)*22px),0);z-index:2}
+.hero__disc .frame{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 8px var(--pine)}
+.hero__badge{position:absolute;right:-11%;top:10%;width:clamp(96px,9.4vw,142px);aspect-ratio:1;border-radius:50%;background:var(--persimmon);color:var(--pine);display:grid;place-items:center;z-index:3;
+  transition:transform .8s var(--ease-out),background .4s}
+.hero__badge:hover{transform:scale(1.08);background:var(--saffron)}
+.hero__badge svg.txt{position:absolute;inset:6%;width:88%;height:88%}
+.hero__badge svg.arr{width:34%;height:34%}
+.hero__copy{position:absolute;inset:0;pointer-events:none}
+.hero__copy>*{pointer-events:auto}
+.hero__title{position:absolute;left:var(--gutter);bottom:calc(var(--bot) + clamp(18px,4.5vh,54px));font:400 clamp(3.7rem,10.6vw,12rem)/.88 var(--serif);letter-spacing:-.03em;z-index:3;pointer-events:none}
+.hero__title em{color:var(--persimmon);padding-right:.04em}
+.hero__intro{position:absolute;left:var(--gutter);top:calc(var(--top) + 2vh);max-width:430px;z-index:3}
+.hero__intro .lede{font-size:clamp(.98rem,1.1vw,1.12rem);margin-bottom:28px;opacity:.85;max-width:350px}
+.hero__cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero__meta{position:absolute;left:var(--gutter);right:var(--gutter);bottom:calc(clamp(20px,3.6vh,38px) + var(--r));display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+  padding-top:16px;border-top:1px solid rgba(239,232,218,.16);font:500 .7rem/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;z-index:3}
+.hero__meta span{opacity:.72}
+.hero__scroll{display:inline-flex;align-items:center;gap:14px;opacity:1!important}
+.hero__scroll i{position:relative;display:block;width:1px;height:38px;background:rgba(239,232,218,.22);overflow:hidden}
+.hero__scroll i::after{content:"";position:absolute;inset:0;background:var(--bone);transform:translateY(-100%);animation:cue 2.6s var(--ease) infinite}
+@keyframes cue{60%,100%{transform:translateY(100%)}}
+.js .hero [data-reveal]{transition-duration:1.3s,1.5s}
+@media(max-width:899px){
+  .hero{--top:88px;--bot:calc(70px + var(--r));min-height:620px}
+  .hero__arch{right:auto;left:50%;translate:-50% 0;width:min(62vw,320px);top:auto;height:min(37svh,330px);bottom:calc(var(--bot) + 20svh)}
+  .hero__intro{top:calc(var(--top) + 1svh);max-width:none;right:var(--gutter)}
+  .hero__intro .lede{max-width:34ch;margin-bottom:20px}
+  .hero__title{bottom:calc(var(--bot) + 3.2svh);font-size:clamp(3.4rem,17vw,6.4rem)}
+  .hero__disc{display:none}
+  .hero__badge{right:-13%;top:-3%;width:88px}
+  .hero__meta span:nth-child(3){display:none}
+  .hero__rings{width:130vw;right:-40vw}
+}
+@media(max-width:520px){.hero__cta .btn--ghost{display:none}.hero__arch{width:min(58vw,290px)}.hero__meta{font-size:.62rem}}
+
+/* ---------- Story ---------- */
+.story{--em:var(--brick);position:relative;z-index:2;background:var(--graphite);color:var(--bone);border-radius:var(--r) var(--r) 0 0;margin-top:calc(var(--r)*-1);
+  padding:clamp(100px,14vw,210px) 0 clamp(100px,13vw,200px);overflow:hidden}
+.story__sun{position:absolute;right:-12vw;top:-2vw;width:27vw;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--saffron),var(--persimmon));opacity:.32;filter:blur(36px);z-index:0}
+.story__sun::after{content:"";position:absolute;inset:-9%;border-radius:50%;border:1px solid rgba(239,232,218,.14)}
+.story .wrap{position:relative;z-index:1}
+.story__head{margin-bottom:clamp(64px,9vw,150px)}
+.story__head .label{grid-column:1/4;padding-top:1.4em}
+.story__lead{grid-column:4/13;font:400 clamp(1.95rem,3.95vw,4.5rem)/1.1 var(--serif);letter-spacing:-.018em}
+.sw{opacity:.16;transition:opacity .3s linear}
+.story__a{grid-column:1/6}
+.story__a .frame{aspect-ratio:4/5.4;border-radius:999px 999px 0 0}
+.story__cap{display:flex;justify-content:space-between;gap:12px;margin-top:16px;font:500 .7rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.story__b{grid-column:7/13;padding-top:clamp(0px,13vw,210px)}
+.story__b p+p{margin-top:1.2em}
+.story__b .txt{max-width:46ch;font-size:clamp(1rem,1.15vw,1.16rem)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,28px);margin:clamp(36px,4.4vw,64px) 0;padding-top:clamp(22px,2.6vw,36px);border-top:1px solid rgba(239,232,218,.14)}
+.stat b{display:block;font:400 clamp(2.8rem,5.4vw,5.6rem)/1 var(--serif);letter-spacing:-.03em}
+.stat b sup{font-size:.4em;vertical-align:top;margin-left:.08em;color:var(--brick)}
+.stat>span{display:block;margin-top:.7em;font:500 .68rem/1.45 var(--sans);letter-spacing:.14em;text-transform:uppercase;opacity:.65}
+.story__c{position:relative;margin-top:clamp(36px,5vw,72px);display:grid;grid-template-columns:1fr auto;gap:22px;align-items:end}
+.story__c .frame{aspect-ratio:16/10;border-radius:clamp(18px,2vw,30px)}
+@media(max-width:899px){
+  .story__head .label,.story__lead,.story__a,.story__b{grid-column:1/-1}
+  .story__head .label{margin-bottom:22px;padding:0}
+  .story__a{margin-bottom:56px}.story__a .frame{aspect-ratio:4/4.6}
+  .story__b{padding-top:0}
+  .story__sun{width:44vw;right:-16vw;top:-12vw}
+  .story__c{grid-template-columns:1fr}
+}
+
+/* ---------- Signature dishes (pinned horizontal scroll) ---------- */
+.dishes{--em:var(--persimmon);position:relative;z-index:3;background:var(--pine);color:var(--bone);border-radius:var(--r) var(--r) 0 0;margin-top:calc(var(--r)*-1);padding-top:clamp(90px,11vw,160px);padding-bottom:clamp(70px,9vw,120px)}
+.dishes__head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;padding-inline:var(--gutter);margin-bottom:clamp(30px,4vw,60px)}
+.dishes__head .label{margin-bottom:1.6em;display:block;opacity:.7}
+.dishes__count{font:400 clamp(1.6rem,2.4vw,2.6rem)/1 var(--serif);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.dishes__count small{display:block;margin-top:.9em;font:500 .68rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;opacity:.55}
+.dishes__track{display:flex;align-items:flex-start;gap:clamp(18px,3vw,52px);padding:0 var(--gutter);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.dishes__track::-webkit-scrollbar{display:none}
+.dish{flex:none;width:min(76vw,360px);scroll-snap-align:center;position:relative}
+.dish__media{position:relative;aspect-ratio:4/5;border-radius:clamp(18px,2vw,30px);overflow:hidden;background:var(--moss)}
+.dish:nth-child(3n+2) .dish__media{border-radius:999px 999px clamp(18px,2vw,30px) clamp(18px,2vw,30px)}
+.dish__num{position:absolute;left:18px;top:16px;z-index:2;font:500 .7rem/1 var(--sans);letter-spacing:.16em;color:var(--bone);mix-blend-mode:difference}
+.dish__body{padding-top:20px;display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:baseline}
+.dish__body h3{font:400 clamp(1.7rem,2.3vw,2.4rem)/1.05 var(--serif);letter-spacing:-.015em}
+.dish__body h3 em{color:var(--persimmon)}
+.dish__price{font:500 .86rem/1 var(--sans);letter-spacing:.06em;opacity:.9}
+.dish__body p{grid-column:1/-1;font-size:.95rem;opacity:.68;max-width:34ch}
+.dishes__bar{display:none;position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(24px,5vh,50px);height:1px;background:rgba(239,232,218,.16)}
+.dishes__bar i{position:absolute;inset:0;background:var(--persimmon);transform:scaleX(0);transform-origin:left;height:2px;top:-.5px}
+.dishes--pinned{padding-block:0}
+.dishes--pinned .dishes__sticky{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding-top:clamp(20px,3vh,40px)}
+.dishes--pinned .dishes__head{margin-bottom:clamp(16px,3.4vh,44px)}
+.dishes--pinned .dishes__track{overflow:visible;width:max-content;scroll-snap-type:none;will-change:transform;padding-right:calc(var(--gutter) + 12vw)}
+.dishes--pinned .dish{width:auto;scroll-snap-align:none}
+.dishes--pinned .dish__media{aspect-ratio:auto;height:clamp(240px,44vh,500px);width:clamp(230px,24vw,400px)}
+.dishes--pinned .dish:nth-child(even) .dish__media{width:clamp(250px,28vw,470px)}
+.dishes--pinned .dish:nth-child(even){margin-top:clamp(0px,5vh,60px)}
+.dishes--pinned .dish:nth-child(3n) .dish__media{width:clamp(220px,20vw,340px)}
+.dishes--pinned .dish__body{max-width:clamp(230px,26vw,420px)}
+.dishes--pinned .dishes__bar{display:block}
+.dishes--pinned .dishes__head .h2{font-size:clamp(2.4rem,5vw,5.6rem)}
+@media(max-width:899px){.dishes__count{display:none}.dishes__head .h2{font-size:clamp(2.4rem,10.5vw,4rem)}}
+
+/* ---------- Feast — expanding image ---------- */
+.feast{position:relative;z-index:1;height:250vh;background:var(--pine);color:var(--bone)}
+.feast__sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.feast__frame{position:absolute;inset:0;--ix:30%;--iy:24%;--rad:30px;--z:1.25;
+  clip-path:inset(var(--iy) var(--ix) var(--iy) var(--ix) round var(--rad));will-change:clip-path}
+.feast__frame .media__in{transform:scale(var(--z));transition:none}
+.feast__frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,8,.4),rgba(11,10,8,.68));opacity:var(--shade,0)}
+.feast__copy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 var(--gutter);z-index:2;pointer-events:none}
+.feast__copy .label{margin-bottom:2em;opacity:0;transform:translateY(16px);transition:opacity .9s .3s,transform 1.1s var(--ease-out) .3s}
+.feast__copy h2{font:400 clamp(3rem,8.4vw,9.6rem)/.92 var(--serif);letter-spacing:-.03em;max-width:14ch;--em:var(--saffron)}
+.feast .w>span{transform:translateY(115%)}
+.feast.is-open .w>span{transform:none}
+.feast.is-open .label{opacity:.85;transform:none}
+.feast__cap{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(22px,4vh,40px);display:flex;justify-content:space-between;gap:16px;z-index:2;font:500 .7rem/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;opacity:0;transition:opacity .9s .5s}
+.feast.is-open .feast__cap{opacity:.8}
+.feast__hint{position:absolute;left:50%;bottom:clamp(22px,4vh,40px);translate:-50% 0;z-index:2;font:500 .7rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;opacity:.6;transition:opacity .5s}
+.feast.is-open .feast__hint{opacity:0}
+
+/* ---------- Ribbon ---------- */
+.ribbon{position:relative;z-index:2;background:var(--ink);color:var(--bone);padding:clamp(56px,8vw,120px) 0;overflow:hidden;border-radius:var(--r) var(--r) 0 0;margin-top:calc(var(--r)*-1)}
+.ribbon__row{display:flex;gap:.5em;width:max-content;white-space:nowrap;font:400 clamp(4rem,12vw,13rem)/1 var(--serif);letter-spacing:-.03em;will-change:transform}
+.ribbon__row span{display:flex;align-items:center;gap:.5em}
+.ribbon__row span::after{content:"";width:.16em;height:.16em;border-radius:50%;background:var(--persimmon);flex:none}
+.ribbon__row--2{font-style:italic;color:transparent;-webkit-text-stroke:1px rgba(239,232,218,.65);margin-top:.05em}
+.ribbon__row--2 span::after{background:transparent;border:1px solid rgba(239,232,218,.65)}
+
+/* ---------- Atmosphere ---------- */
+.atmos{--em:var(--brick);position:relative;z-index:2;background:var(--bone-2);color:var(--bone);padding:clamp(20px,3vw,40px) 0 clamp(100px,12vw,190px)}
+.atmos__head{margin-bottom:clamp(50px,7vw,110px);align-items:end}
+.atmos__head .label{grid-column:1/-1;margin-bottom:2em}
+.atmos__head .h2{grid-column:1/8}
+.atmos__head .lede{grid-column:9/13;padding-bottom:.6em}
+.atmos__grid{display:grid;grid-template-columns:1fr 1.15fr .9fr;gap:clamp(14px,2vw,30px);align-items:start}
+.col{display:flex;flex-direction:column;gap:clamp(14px,2vw,30px);will-change:transform}
+.col--b{margin-top:clamp(40px,8vw,140px)}
+.col--c{margin-top:clamp(0px,3vw,50px)}
+.tile{position:relative}
+.tile .frame{border-radius:clamp(14px,1.6vw,26px)}
+.tile--tall .frame{aspect-ratio:3/4.1}.tile--sq .frame{aspect-ratio:1}.tile--wide .frame{aspect-ratio:4/3}.tile--arch .frame{aspect-ratio:3/4.3;border-radius:999px 999px clamp(14px,1.6vw,26px) clamp(14px,1.6vw,26px)}
+.tile figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:14px;font:500 .7rem/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.tile figcaption span{opacity:.5}
+.tile figcaption b{font:400 1.35rem/1 var(--serif);letter-spacing:0;text-transform:none;transition:transform .7s var(--ease-out)}
+.tile:hover figcaption b{transform:translateX(6px);font-style:italic}
+@media(max-width:899px){
+  .atmos__head .h2,.atmos__head .lede{grid-column:1/-1}
+  .atmos__head .h2{margin-bottom:24px}
+  .atmos__grid{grid-template-columns:1fr 1fr}
+  .col--c{grid-column:1/-1;flex-direction:row;margin-top:0}
+  .col--c .tile{flex:1;min-width:0}
+  .col--b{margin-top:48px}
+  .tile figcaption{flex-direction:column;align-items:flex-start;gap:4px}
+}
+
+/* ---------- Menu ---------- */
+.menu-sec{--em:var(--persimmon);position:relative;z-index:3;background:var(--pine);color:var(--bone);border-radius:var(--r) var(--r) 0 0;margin-top:calc(var(--r)*-1);padding:clamp(100px,13vw,200px) 0 clamp(100px,12vw,190px)}
+.menu__side{grid-column:1/6;position:sticky;top:clamp(80px,12vh,130px);align-self:start}
+.menu__side .label{display:block;margin-bottom:2em;opacity:.7}
+.menu__side .h2{margin-bottom:.5em}
+.menu__side .lede{margin-bottom:clamp(28px,3vw,44px)}
+.menu__img{position:relative;aspect-ratio:4/4.6;max-width:440px;border-radius:999px 999px 24px 24px;overflow:hidden;background:var(--moss)}
+.menu__img .media{opacity:0;clip-path:inset(0 0 100% 0);transition:opacity .6s,clip-path 1.2s var(--ease)}
+.menu__img .media.is-active{opacity:1;clip-path:inset(0 0 0 0)}
+.menu__main{grid-column:7/13}
+.tabs{position:relative;display:flex;gap:4px;padding:5px;border-radius:99px;background:rgba(239,232,218,.07);overflow-x:auto;scrollbar-width:none;margin-bottom:clamp(30px,4vw,56px)}
+.tabs::-webkit-scrollbar{display:none}
+.tabs__ind{position:absolute;left:0;top:5px;bottom:5px;border-radius:99px;background:var(--bone);transition:transform .8s var(--ease-out),width .8s var(--ease-out);z-index:0}
+.tab{position:relative;z-index:1;flex:1 0 auto;padding:.95em 1.5em;border-radius:99px;font:500 .74rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;transition:color .5s}
+.tab[aria-selected="true"]{color:var(--pine)}
+.tab small{opacity:.55;margin-left:.6em;font-size:.9em}
+.panel[hidden]{display:none}
+.panel__hd{display:flex;justify-content:space-between;gap:16px;margin-bottom:clamp(8px,1vw,14px);font:500 .7rem/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;opacity:.55}
+.mi{position:relative;padding:clamp(16px,1.6vw,24px) 0;border-top:1px solid rgba(239,232,218,.13);transition:padding .6s var(--ease-out)}
+.mi:last-child{border-bottom:1px solid rgba(239,232,218,.13)}
+.mi__top{display:flex;align-items:baseline;gap:14px}
+.mi h4{font:400 clamp(1.4rem,1.9vw,2rem)/1.15 var(--serif);letter-spacing:-.01em;transition:color .5s,transform .7s var(--ease-out)}
+.mi__dots{flex:1;border-bottom:1px dotted rgba(239,232,218,.3);transform:translateY(-.3em);min-width:20px}
+.mi__price{white-space:nowrap;font:500 .86rem/1 var(--sans);letter-spacing:.05em;font-variant-numeric:tabular-nums}
+.mi p{margin-top:.45em;font-size:.94rem;opacity:.62;max-width:52ch}
+.mi__tag{margin-left:.6em;font:500 .6rem/1 var(--sans);letter-spacing:.12em;border:1px solid rgba(239,232,218,.3);border-radius:99px;padding:.3em .55em;vertical-align:.25em;opacity:.8}
+.mi:hover h4{color:var(--saffron);transform:translateX(10px)}
+.menu-sec:not(.is-in) .panel.is-active .mi{opacity:0}
+.menu-sec.is-in .panel.is-active .mi{animation:miIn 1s var(--ease-out) both;animation-delay:calc(var(--i)*70ms)}
+@keyframes miIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.menu__note{margin-top:28px;font-size:.86rem;opacity:.6;display:flex;gap:1.4em;flex-wrap:wrap}
+@media(max-width:899px){.menu__side,.menu__main{grid-column:1/-1;position:static}.menu__side{margin-bottom:56px}.menu__img{display:none}}
+
+/* ---------- Reserve ---------- */
+.reserve{--em:var(--persimmon);position:relative;z-index:4;background:var(--graphite);color:var(--bone);border-radius:var(--r) var(--r) 0 0;margin-top:calc(var(--r)*-1);overflow:hidden;padding:clamp(100px,13vw,200px) 0}
+.reserve__sun{position:absolute;left:-16vw;bottom:-22vw;width:64vw;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 40%,var(--saffron),var(--persimmon) 70%);opacity:.22;filter:blur(60px);z-index:0}
+.reserve__sun::before,.reserve__sun::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(239,232,218,.14)}
+.reserve__sun::before{inset:-7%}.reserve__sun::after{inset:-15%}
+.reserve .wrap{position:relative;z-index:1}
+.reserve__copy{grid-column:1/7;padding-right:clamp(0px,3vw,50px)}
+.reserve__copy .label{display:block;margin-bottom:2em}
+.reserve__copy .h2{margin-bottom:.55em}
+.reserve__copy .h2 em{font-style:italic}
+.reserve__copy .lede{opacity:.85;margin-bottom:clamp(30px,4vw,54px)}
+.reserve__call{display:inline-flex;flex-direction:column;gap:.5em}
+.reserve__call small{font:500 .7rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;opacity:.7}
+.reserve__call a{font:400 clamp(2rem,3.4vw,3.6rem)/1 var(--serif);letter-spacing:-.02em;border-bottom:1px solid rgba(239,232,218,.35);padding-bottom:.15em;transition:border-color .4s,letter-spacing .7s var(--ease-out)}
+.reserve__call a:hover{border-color:var(--persimmon);letter-spacing:0}
+.res{grid-column:7/13;position:relative;background:var(--bone-2);color:var(--bone);border-radius:clamp(22px,2.4vw,36px);padding:clamp(26px,3vw,48px);box-shadow:0 40px 80px -30px rgba(0,0,0,.6);border:1px solid rgba(239,232,218,.08)}
+.res__row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fld{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;min-width:0}
+.fld>label,.fld>span.l{font:500 .68rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;opacity:.6}
+.inp{width:100%;background:transparent;border:1px solid rgba(239,232,218,.16);border-radius:14px;padding:.95em 1.1em;font-size:1rem;line-height:1.2;color:var(--bone);transition:border-color .4s,box-shadow .4s,background .4s;appearance:none;-webkit-appearance:none;min-height:52px}
+.inp::placeholder{color:rgba(239,232,218,.4)}
+.inp:hover{border-color:rgba(239,232,218,.32)}
+.inp:focus{outline:none;border-color:var(--persimmon);box-shadow:0 0 0 4px rgba(226,99,47,.22);background:rgba(239,232,218,.05)}
+.fld.err .inp{border-color:var(--brick)}
+.fld .msg{font-size:.8rem;color:var(--persimmon);max-height:0;overflow:hidden;opacity:0;transition:max-height .4s var(--ease-out),opacity .4s}
+.fld.err .msg{max-height:40px;opacity:1}
+.step{display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(239,232,218,.16);border-radius:14px;padding:6px;min-height:52px}
+.step button{width:40px;height:40px;border-radius:10px;font-size:1.3rem;line-height:1;display:grid;place-items:center;transition:background .3s,color .3s}
+.step button:hover{background:var(--bone);color:var(--graphite)}
+.step output{font:400 1.5rem/1 var(--serif);min-width:2.5ch;text-align:center;font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:.8em 1.1em;border-radius:99px;border:1px solid rgba(239,232,218,.18);font:500 .8rem/1 var(--sans);letter-spacing:.06em;font-variant-numeric:tabular-nums;transition:background .4s,color .4s,border-color .4s,transform .4s var(--ease-out)}
+.chip:hover{border-color:var(--bone);transform:translateY(-2px)}
+.chip[aria-checked="true"]{background:var(--bone);color:var(--graphite);border-color:var(--bone)}
+.res__foot{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:22px;flex-wrap:wrap}
+.res__foot small{font-size:.8rem;opacity:.6;max-width:26ch;line-height:1.45}
+.res__note{font-size:.86rem;color:var(--brick);margin-top:4px;min-height:1.3em}
+.res__form{transition:opacity .5s,transform .7s var(--ease-out)}
+.res.is-sent .res__form{opacity:0;transform:translateY(-16px);pointer-events:none;visibility:hidden;position:absolute}
+.res__done{display:none;text-align:center;padding:clamp(20px,3vw,44px) 0}
+.res.is-sent .res__done{display:block;animation:miIn 1s var(--ease-out) both}
+.res__done svg{width:84px;height:84px;margin:0 auto 26px;color:var(--brick)}
+.res__done circle,.res__done path{stroke-dasharray:260;stroke-dashoffset:260}
+.res.is-sent .res__done circle{animation:draw 1.3s var(--ease) .1s forwards}
+.res.is-sent .res__done path{animation:draw .9s var(--ease) .9s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.res__done h3{font:400 clamp(2.2rem,3.4vw,3.4rem)/1 var(--serif);letter-spacing:-.02em;margin-bottom:.5em}
+.res__done p{max-width:36ch;margin:0 auto 26px;opacity:.75}
+.res__done strong{display:block;font:400 1.5rem/1.2 var(--serif);margin-bottom:1em;opacity:1}
+@media(max-width:899px){.reserve__copy,.res{grid-column:1/-1}.reserve__copy{margin-bottom:48px}.reserve__sun{width:110vw;left:-40vw;bottom:-40vw}}
+@media(max-width:480px){.res__row{grid-template-columns:1fr}}
+
+/* ---------- Visit ---------- */
+.visit{--em:var(--persimmon);position:relative;z-index:5;background:var(--ink);color:var(--bone);border-radius:var(--r) var(--r) 0 0;margin-top:calc(var(--r)*-1);padding:clamp(100px,13vw,200px) 0 clamp(90px,10vw,160px)}
+.visit__a{grid-column:1/6}
+.visit__a .label{display:block;margin-bottom:2em}
+.visit__a .h2{margin-bottom:clamp(30px,4vw,56px)}
+.visit__status{display:inline-flex;align-items:center;gap:.7em;padding:.8em 1.2em;border-radius:99px;background:var(--bone-2);font:500 .72rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;margin-bottom:clamp(28px,3vw,44px)}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:26px clamp(14px,2vw,30px);margin-bottom:clamp(30px,3.6vw,50px)}
+.contact h5{font:500 .68rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;opacity:.55;margin-bottom:1em}
+.contact p,.contact a{font-size:1.05rem;line-height:1.5}
+.contact a{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .6s var(--ease-out)}
+.contact a:hover{background-size:100% 1px}
+.hours{width:100%;border-collapse:collapse;font-size:.98rem}
+.hours th,.hours td{padding:.85em 0;border-top:1px solid rgba(239,232,218,.12);text-align:left;font-weight:400;transition:padding .5s var(--ease-out)}
+.hours tr:last-child th,.hours tr:last-child td{border-bottom:1px solid rgba(239,232,218,.12)}
+.hours td{text-align:right;font-variant-numeric:tabular-nums}
+.hours tr.is-today{font-weight:500}
+.hours tr.is-today th::after{content:"Danes";margin-left:.9em;font:500 .6rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;background:var(--brick);color:var(--bone);padding:.4em .7em;border-radius:99px;vertical-align:.15em}
+html[lang="en"] .hours tr.is-today th::after{content:"Today"}
+.visit__b{grid-column:7/13;align-self:stretch;display:flex;flex-direction:column;gap:18px}
+.map{position:relative;flex:1;min-height:clamp(380px,46vw,700px);border-radius:clamp(20px,2.2vw,34px);overflow:hidden;background:var(--bone-2)}
+.map svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;left:52%;top:47%;translate:-50% -100%;display:flex;flex-direction:column;align-items:center;z-index:2}
+.pin__tag{background:var(--pine);color:var(--bone);padding:.75em 1.1em;border-radius:99px;font:400 1.3rem/1 var(--serif);white-space:nowrap;box-shadow:0 14px 30px -10px rgba(0,0,0,.6);border:1px solid rgba(239,232,218,.12)}
+.pin__tag em{color:var(--persimmon)}
+.pin__stem{width:2px;height:26px;background:var(--pine)}
+.pin__dot{position:relative;width:16px;height:16px;border-radius:50%;background:var(--persimmon);box-shadow:0 0 0 4px var(--bone)}
+.pin__dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--persimmon);animation:ping 2.8s var(--ease-out) infinite}
+@keyframes ping{0%{transform:scale(1);opacity:.9}100%{transform:scale(5);opacity:0}}
+.map__cta{position:absolute;left:18px;bottom:18px;z-index:2}
+.visit__ways{display:flex;gap:clamp(14px,2vw,30px);flex-wrap:wrap;font-size:.92rem;opacity:.7}
+@media(max-width:899px){.visit__a,.visit__b{grid-column:1/-1}.visit__a{margin-bottom:56px}.map{min-height:420px}}
+
+/* ---------- Footer ---------- */
+.footer{position:relative;z-index:1;background:var(--pine);color:var(--bone);padding:clamp(70px,8vw,120px) var(--gutter) clamp(20px,2.5vw,34px);overflow:hidden}
+.has-reveal .footer{position:fixed;left:0;right:0;bottom:0;z-index:0}
+.has-reveal main{margin-bottom:var(--footer-h)}
+.footer__top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:clamp(24px,4vw,60px);padding-bottom:clamp(40px,6vw,90px)}
+.footer h6{font:500 .68rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-bottom:1.6em}
+.footer li+li{margin-top:.6em}
+.footer li a{display:inline-block;font-size:1.02rem;opacity:.85;transition:opacity .3s,transform .6s var(--ease-out)}
+.footer li a:hover{opacity:1;transform:translateX(6px);color:var(--saffron)}
+.news p{font:400 clamp(1.7rem,2.4vw,2.5rem)/1.08 var(--serif);letter-spacing:-.015em;max-width:15ch;margin-bottom:1.1em}
+.news p em{color:var(--persimmon)}
+.news form{position:relative;max-width:380px}
+.news input{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(239,232,218,.35);padding:.9em 3.2em .9em 0;font-size:1rem;color:var(--bone);border-radius:0;transition:border-color .4s}
+.news input:focus{outline:none;border-color:var(--persimmon)}
+.news input::placeholder{color:rgba(239,232,218,.45)}
+.news button{position:absolute;right:0;top:50%;translate:0 -50%;width:42px;height:42px;border-radius:50%;background:var(--bone);color:var(--pine);display:grid;place-items:center;transition:background .4s,transform .6s var(--ease-out)}
+.news button:hover{background:var(--persimmon);transform:translateX(4px)}
+.news button svg{width:18px;height:18px}
+.news .thanks{margin-top:14px;font-size:.9rem;color:var(--saffron);min-height:1.4em}
+.footer__word{font:400 clamp(6rem,29vw,34rem)/.74 var(--serif);letter-spacing:-.05em;text-align:center;display:flex;justify-content:center;padding-top:.06em;user-select:none;margin-inline:-1vw}
+.footer__word span{display:block;overflow-x:visible;overflow-y:clip;padding:.02em .005em .2em;margin-bottom:-.1em}
+.footer__word b{display:block;font-weight:400;transform:translateY(110%);transition:transform 1.4s var(--ease-out);transition-delay:calc(var(--i)*.07s + .1s)}
+.footer.is-in .footer__word b{transform:none}
+.footer__word i{font-style:normal;color:var(--persimmon)}
+.footer__bot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:clamp(16px,2vw,26px);border-top:1px solid rgba(239,232,218,.14);font-size:.82rem;opacity:.7}
+.totop{display:inline-flex;align-items:center;gap:.8em;font:500 .7rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.totop i{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(239,232,218,.4);transition:background .4s,color .4s,transform .6s var(--ease-out)}
+.totop:hover i{background:var(--bone);color:var(--pine);transform:translateY(-4px)}
+.totop svg{width:16px;height:16px}
+@media(max-width:899px){.footer__top{grid-template-columns:1fr 1fr}.news{grid-column:1/-1}.footer__word{font-size:36vw}}
+
+/* ---------- Reduced motion & fallbacks ---------- */
+.reduce *,.reduce *::before,.reduce *::after{transition-duration:.01ms!important;transition-delay:0s!important;animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important}
+.reduce [data-reveal]{opacity:1!important;transform:none!important}
+.reduce [data-words] .w>span,.reduce .feast .w>span{transform:none!important}
+.reduce .media{clip-path:none!important}.reduce .media__in{transform:none!important}
+.reduce .hero__scroll i::after{animation:none}
+@media (prefers-reduced-motion:reduce){.hero__scroll i::after,.dot,.pin__dot::after{animation:none}}
+.no-js .loader,.no-js .cursor{display:none}
+</style>
+</head>
+<body>
+<a class="skip" href="#story" data-i18n="k180">Preskoči na vsebino</a>
+
+<!-- ============ PAGE LOADER ============ -->
+<div class="loader" aria-hidden="true">
+  <div class="loader__top label"><span data-i18n="k7">Kuhinja na ognju in kavarna</span><span>Ljubljana</span></div>
+  <div class="loader__word"><span><b style="--i:0">S</b></span><span><b style="--i:1">o</b></span><span><b style="--i:2">r</b></span><span><b style="--i:3">r</b></span><span><b style="--i:4">e</b></span><span><b style="--i:5">l</b></span><span><b style="--i:6"><i>.</i></b></span></div>
+  <div class="loader__bar"><i></i></div>
+  <div class="loader__bot"><span class="loader__count">000</span><span class="label" data-i18n="k8">Netimo ogenj</span></div>
+</div>
+
+<div class="progress" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><span></span></div>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="nav" id="nav">
+  <div class="nav__bar">
+    <a class="logo" href="#top" aria-label="Sorrel – na vrh strani" data-i18n-aria="k181">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5c4.6 3 7.3 7 7.3 11.2 0 4.7-3 8.3-7.3 9.8-4.3-1.5-7.3-5.1-7.3-9.8C4.7 8.5 7.4 4.5 12 1.5Zm0 6.2c-.9 2.8-.9 8.2 0 12.6.9-4.4.9-9.8 0-12.6Z" fill-rule="evenodd"/></svg>
+      <span>Sorrel</span>
+    </a>
+    <nav class="nav__links" aria-label="Glavna navigacija" data-i18n-aria="k182">
+      <a class="roll" href="#story"><span data-t="Zgodba" data-i18n="k0">Zgodba</span></a>
+      <a class="roll" href="#dishes"><span data-t="Jedi" data-i18n="k1">Jedi</span></a>
+      <a class="roll" href="#atmosphere"><span data-t="Prostor" data-i18n="k2">Prostor</span></a>
+      <a class="roll" href="#menu"><span data-t="Jedilnik" data-i18n="k3">Jedilnik</span></a>
+      <a class="roll" href="#visit"><span data-t="Obisk" data-i18n="k4">Obisk</span></a>
+    </nav>
+    <div class="nav__act">
+      <div class="lang" role="group" aria-label="Jezik / Language"><button type="button" class="lang__b is-active" data-lang="sl" lang="sl" aria-pressed="true" title="Slovenščina">SL</button><span class="lang__sep" aria-hidden="true"></span><button type="button" class="lang__b" data-lang="en" lang="en" aria-pressed="false" title="English">EN</button></div>
+      <a class="nav__pill" href="#reserve" data-magnetic data-i18n="k214">Rezerviraj</a>
+      <button class="burger" id="burger" aria-expanded="false" aria-controls="menu-overlay" aria-label="Odpri meni">
+        <span class="burger__txt"><span data-i18n="k5">Meni</span><span data-i18n="k6">Zapri</span></span>
+        <span class="burger__ic"><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ FULL-SCREEN MENU ============ -->
+<div class="mo" id="menu-overlay" role="dialog" aria-modal="true" aria-label="Meni spletne strani" data-i18n-aria="k183" aria-hidden="true">
+  <div class="mo__glow"></div>
+  <ul class="mo__list" id="moList">
+    <li><a href="#story" data-p="0" style="--i:0"><span class="n">01</span><span class="t" data-i18n="k9">Naša zgodba</span></a></li>
+    <li><a href="#dishes" data-p="1" style="--i:1"><span class="n">02</span><span class="t" data-i18n="k10">Značilne jedi</span></a></li>
+    <li><a href="#atmosphere" data-p="2" style="--i:2"><span class="n">03</span><span class="t" data-i18n="k2">Prostor</span></a></li>
+    <li><a href="#menu" data-p="3" style="--i:3"><span class="n">04</span><span class="t" data-i18n="k11">Jedilnik</span></a></li>
+    <li><a href="#reserve" data-p="4" style="--i:4"><span class="n">05</span><span class="t" data-i18n="k12">Rezervacije</span></a></li>
+    <li><a href="#visit" data-p="5" style="--i:5"><span class="n">06</span><span class="t" data-i18n="k13">Kje smo</span></a></li>
+  </ul>
+  <div class="mo__side">
+    <div class="mo__stage arch" aria-hidden="true">
+      <div class="media is-active" data-noreveal data-ph="produce:3" data-src="https://images.unsplash.com/photo-1755406050322-36c15e00c6d3?auto=format&w=1200&q=78"></div>
+      <div class="media" data-noreveal data-ph="plate:trout:4" data-src="https://images.unsplash.com/photo-1605185202667-c6babf0a0490?auto=format&w=1200&q=78"></div>
+      <div class="media" data-noreveal data-ph="room:evening:5" data-src="https://images.unsplash.com/photo-1709548145082-04d0cde481d4?auto=format&w=1200&q=78"></div>
+      <div class="media" data-noreveal data-ph="plate:duck:6" data-src="https://images.unsplash.com/photo-1603072995965-bd07b8fb582e?auto=format&w=1200&q=78"></div>
+      <div class="media" data-noreveal data-ph="hearth:7" data-src="https://images.unsplash.com/photo-1706011465964-7a226eea129a?auto=format&w=1200&q=78"></div>
+      <div class="media" data-noreveal data-ph="room:bar:8" data-src="https://images.unsplash.com/photo-1640902106532-47dd3a2e833e?auto=format&w=1200&q=78"></div>
+    </div>
+    <div class="mo__info">
+      <div>
+        <span class="mo__status"><i class="dot js-dot"></i><span class="js-status">Odprto danes</span></span>
+        <p style="margin-top:.9em" data-i18n="k14">Vrtna ulica 12, 1000 Ljubljana</p>
+      </div>
+      <a class="btn btn--bone" href="#reserve"><span data-i18n="k15">Rezerviraj mizo</span> <svg class="btn__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ============ 1 · HERO ============ -->
+<section class="hero" id="top" data-nav="dark" aria-label="Dobrodošli" data-i18n-aria="k191">
+  <div class="hero__glow"></div>
+  <div class="hero__rings" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <div class="hero__arch" id="heroArch">
+    <div class="hero__arch-in">
+      <div class="frame"><div class="media" data-ph="hearth:11" data-alt="Plameni v kamnitem ognjišču" data-i18n-alt="k197" data-par=".06" data-src="https://images.unsplash.com/photo-1706011465964-7a226eea129a?auto=format&w=1400&q=80"></div></div>
+      <div class="hero__disc"><div class="frame"><div class="media" data-ph="plate:leek:12" data-alt="Por z žerjavice z romescom" data-i18n-alt="k198" data-src="https://images.unsplash.com/photo-1600069779584-22692e97da89?auto=format&w=1000&q=80"></div></div></div>
+      <a class="hero__badge" href="#reserve" aria-label="Rezerviraj mizo" data-i18n-aria="k15" data-magnetic>
+        <svg class="txt" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="circ" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text font-size="8.4" font-weight="600" fill="currentColor" letter-spacing="1"><textPath href="#circ" textLength="236" lengthAdjust="spacing" data-i18n="k22">REZERVIRAJ MIZO · PRI OGNJU · </textPath></text></svg>
+        <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero__copy" id="heroCopy">
+    <div class="hero__intro">
+      <p class="lede" data-reveal data-d="900" data-i18n="k17">Kuhinja na ognju in celodnevna kavarna ob reki v Ljubljani. Počasi kuhamo na hrastovem žaru – za ljudi, ki radi posedijo.</p>
+      <div class="hero__cta" data-reveal data-d="1050">
+        <a class="btn" href="#reserve"><span data-i18n="k15">Rezerviraj mizo</span> <svg class="btn__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn--ghost" href="#menu" data-i18n="k16">Poglej jedilnik</a>
+      </div>
+    </div>
+    <h1 class="hero__title" data-words data-d="350" data-i18n="k18"><span class="ln">Ogenj, sol</span><span class="ln">&amp; <em>sezona.</em></span></h1>
+  </div>
+
+  <div class="hero__meta" data-reveal data-d="1250">
+    <span data-i18n="k19">Kavarna 08–16 · Kuhinja 17:30–23:00</span>
+    <span class="hero__scroll" data-i18n="k20"><i></i>Drsi</span>
+    <span data-i18n="k21">Od 2016 · Vrtna ulica 12</span>
+  </div>
+</section>
+
+<!-- ============ 2 · STORY ============ -->
+<section class="story" id="story" data-nav="dark" aria-labelledby="storyLead">
+  <div class="story__sun" data-drift="-70" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="story__head g12">
+      <p class="label" data-reveal data-i18n="k23"><i>01</i>Zgodba</p>
+      <p class="story__lead" id="storyLead" data-scrub data-i18n="k24">Sorrel se je začel s šestimi mizami in eno samo pečjo na drva ob reki. Deset let pozneje je iz peči zraslo ognjišče, iz miz pa cel prostor, ideja pa je ostala enaka: pošteno kuhati na ognju, nabavljati pri ljudeh, ki jih poznamo po imenu, in večeru pustiti, da traja, kolikor pač traja.</p>
+    </div>
+    <div class="g12">
+      <figure class="story__a">
+        <div class="frame arch"><div class="media" data-ph="produce:21" data-alt="Tržnična zelenjava na lanenem prtu" data-i18n-alt="k199" data-par=".09" data-src="https://images.unsplash.com/photo-1755406050322-36c15e00c6d3?auto=format&w=1200&q=80"></div></div>
+        <figcaption class="story__cap" data-reveal><span data-i18n="k25">Jutro na tržnici</span><span data-i18n="k26">7:10</span></figcaption>
+      </figure>
+      <div class="story__b">
+        <div class="txt">
+          <p data-reveal data-i18n="k27">Kurimo s hrastom in bukvijo iz gozda, ki je oddaljen štirideset minut, in nad njima skuhamo vse – od jutranjega kruha do zadnjega krožnika ob koncu večera. V stavbi nimamo plinskega priključka.</p>
+          <p data-reveal data-d="120" data-i18n="k28">Jedilnik vsako jutro sestavimo iz tistega, kar prinesejo kmetije, nabiralci in ribiči. Nekateri dnevi so dovolj že za en sam popoln por. Nam zadostuje.</p>
+        </div>
+        <div class="stats" data-reveal>
+          <div class="stat"><b><span data-count="10">10</span></b><span data-i18n="k29">Let ob<br>reki</span></div>
+          <div class="stat"><b><span data-count="1">1</span></b><span data-i18n="k30">Ognjišče,<br>brez plina</span></div>
+          <div class="stat"><b><span data-count="38">38</span><sup>km</sup></b><span data-i18n="k31">Do najbolj<br>oddaljene kmetije</span></div>
+        </div>
+        <div class="story__c">
+          <div class="frame hz" data-cursor="Look"><div class="media" data-ph="room:morning:22" data-alt="Kavarna v jutranji svetlobi" data-i18n-alt="k200" data-par=".07" data-src="https://images.unsplash.com/photo-1732472613570-8618d77339dd?auto=format&w=1200&q=78"></div></div>
+        </div>
+        <p style="margin-top:28px" data-reveal><a class="link" href="#atmosphere"><span data-i18n="k32">Oglejte si prostor</span> <svg class="btn__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 · SIGNATURE PLATES (pinned, horizontal) ============ -->
+<section class="dishes" id="dishes" data-nav="dark" aria-labelledby="dishesTitle">
+  <div class="dishes__sticky">
+    <div class="dishes__head">
+      <div>
+        <span class="label" data-i18n="k33"><i>02</i>Značilne jedi</span>
+        <h2 class="h2" id="dishesTitle" data-words data-i18n="k34">Jedi, ki se jim <em>vedno</em><br>znova vračamo</h2>
+      </div>
+      <div class="dishes__count" data-reveal><span id="dishIdx">01</span> / 06<small data-i18n="k35">Drsite naprej</small></div>
+    </div>
+    <div class="dishes__track" id="dishTrack">
+      <article class="dish hz" data-cursor="Taste">
+        <div class="dish__media"><span class="dish__num">01</span><div class="media" data-ph="plate:leek:31" data-alt="Žerjavični por z lešnikovim romescom" data-i18n-alt="k201" data-src="https://images.unsplash.com/photo-1600069779584-22692e97da89?auto=format&w=1200&q=80"></div></div>
+        <div class="dish__body"><h3 data-i18n="k36">Žerjavični <em>por</em></h3><span class="dish__price">€14</span><p data-i18n="k37">Lešnikov romesco, staran šeri, olje iz kislice.</p></div>
+      </article>
+      <article class="dish hz" data-cursor="Taste">
+        <div class="dish__media"><span class="dish__num">02</span><div class="media" data-ph="plate:bread:32" data-alt="Ožgan kvasni kruh z maslom" data-i18n-alt="k202" data-src="https://images.unsplash.com/photo-1620921586333-b7566c34550a?auto=format&w=1200&q=80"></div></div>
+        <div class="dish__body"><h3 data-i18n="k38">Ožgan <em>kvasni kruh</em></h3><span class="dish__price">€7</span><p data-i18n="k39">Pečen v žerjavici, domače maslo, kosmiči soli.</p></div>
+      </article>
+      <article class="dish hz" data-cursor="Taste">
+        <div class="dish__media"><span class="dish__num">03</span><div class="media" data-ph="plate:trout:33" data-alt="Prekajena postrv s smetano s kislico" data-i18n-alt="k203" data-src="https://images.unsplash.com/photo-1605185202667-c6babf0a0490?auto=format&w=1200&q=80"></div></div>
+        <div class="dish__body"><h3 data-i18n="k40">Prekajena <em>postrv</em></h3><span class="dish__price">€26</span><p data-i18n="k41">V bukovem dimu, smetana s kislico, vložena šalotka, postrvja ikra.</p></div>
+      </article>
+      <article class="dish hz" data-cursor="Taste">
+        <div class="dish__media"><span class="dish__num">04</span><div class="media" data-ph="plate:duck:34" data-alt="Zorjena raca s smokvami" data-i18n-alt="k204" data-src="https://images.unsplash.com/photo-1603072995965-bd07b8fb582e?auto=format&w=1200&q=80"></div></div>
+        <div class="dish__body"><h3 data-i18n="k42">Zorjena <em>raca</em></h3><span class="dish__price">€34</span><p data-i18n="k43">Omaka iz smokvinih listov, pečene smokve, divji ohrovt.</p></div>
+      </article>
+      <article class="dish hz" data-cursor="Taste">
+        <div class="dish__media"><span class="dish__num">05</span><div class="media" data-ph="plate:celeriac:35" data-alt="Zelena, pečena v pepelu" data-i18n-alt="k205" data-src="https://images.unsplash.com/photo-1606791422814-b32c705e3e2f?auto=format&w=1200&q=80"></div></div>
+        <div class="dish__body"><h3 data-i18n="k44">Zelena iz <em>pepela</em></h3><span class="dish__price">€22</span><p data-i18n="k45">Rjavo maslo, praženi orehi, črni česen.</p></div>
+      </article>
+      <article class="dish hz" data-cursor="Taste">
+        <div class="dish__media"><span class="dish__num">06</span><div class="media" data-ph="plate:cake:36" data-alt="Sirova torta z žganim medom" data-i18n-alt="k206" data-src="https://images.unsplash.com/photo-1693947471468-c1d404413a2f?auto=format&w=1200&q=80"></div></div>
+        <div class="dish__body"><h3 data-i18n="k46">Torta z <em>žganim medom</em></h3><span class="dish__price">€11</span><p data-i18n="k47">Pečena ob ustju ognja, morska sol, kutina.</p></div>
+      </article>
+    </div>
+    <div class="dishes__bar" aria-hidden="true"><i id="dishBar"></i></div>
+  </div>
+</section>
+
+<!-- ============ 4 · FOOD PHOTOGRAPHY — image expands on scroll ============ -->
+<section class="feast" id="feast" data-nav="dark" aria-label="Dolga miza" data-i18n-aria="k192">
+  <div class="feast__sticky">
+    <div class="feast__frame" id="feastFrame">
+      <div class="media" data-noreveal data-ph="spread:41" data-alt="Dolga miza z jedmi za deljenje, pogled od zgoraj" data-i18n-alt="k207" data-src="https://images.unsplash.com/photo-1463183547458-6a2c760d0912?auto=format&w=2000&q=78"></div>
+    </div>
+    <div class="feast__copy">
+      <p class="label" data-i18n="k48"><i>03</i>Dolga miza</p>
+      <h2 data-feast data-i18n="k49">Ustvarjeno za <em>deljenje</em> in dolge večere.</h2>
+    </div>
+    <p class="feast__hint" aria-hidden="true" data-i18n="k35">Drsite naprej</p>
+    <div class="feast__cap"><span data-i18n="k50">Nedeljska dolga miza · družinski način</span><span data-i18n="k51">8 – 24 gostov</span></div>
+  </div>
+</section>
+
+<!-- ribbon -->
+<section class="ribbon" data-nav="dark" aria-hidden="true">
+  <div class="ribbon__row" data-ribbon="1"><span data-i18n="k52">Hrast</span><span data-i18n="k53">Sol</span><span data-i18n="k54">Dim</span><span data-i18n="k55">Med</span><span data-i18n="k56">Kislica</span><span data-i18n="k57">Pepel</span><span data-i18n="k58">Figa</span><span data-i18n="k52">Hrast</span><span data-i18n="k53">Sol</span><span data-i18n="k54">Dim</span></div>
+  <div class="ribbon__row ribbon__row--2" data-ribbon="-1"><span data-i18n="k59">Sezonsko</span><span data-i18n="k60">Lokalno</span><span data-i18n="k61">Počasi</span><span data-i18n="k62">Odprt ogenj</span><span data-i18n="k59">Sezonsko</span><span data-i18n="k60">Lokalno</span><span data-i18n="k61">Počasi</span><span data-i18n="k62">Odprt ogenj</span></div>
+</section>
+
+<!-- ============ 5 · ATMOSPHERE ============ -->
+<section class="atmos" id="atmosphere" data-nav="dark" aria-labelledby="atmosTitle">
+  <div class="wrap">
+    <div class="atmos__head g12">
+      <p class="label" data-reveal data-i18n="k63"><i>04</i>Prostor</p>
+      <h2 class="h2" id="atmosTitle" data-words data-i18n="k64">Prostor, ki večer <em>objame.</em></h2>
+      <p class="lede" data-reveal data-d="150" data-i18n="k65">Mehka svetloba, topel kamen, na koncu prostora žareče ognjišče. Podnevi svetla kavarna z dolgo skupno mizo, zvečer sveče in tiho vzdušje. Pridite na kavo, ostanite na večerjo – nihče ne šteje minut.</p>
+    </div>
+    <div class="atmos__grid" data-drift-ref>
+      <div class="col col--a" data-drift="0">
+        <figure class="tile tile--tall hz" data-cursor="Look"><div class="frame"><div class="media" data-ph="room:evening:51" data-alt="Jedilnica v mraku" data-i18n-alt="k208" data-par=".07" data-src="https://images.unsplash.com/photo-1709548145082-04d0cde481d4?auto=format&w=1200&q=78"></div></div><figcaption><b data-i18n="k66">Ognjiščna soba</b><span data-i18n="k67">Večer</span></figcaption></figure>
+        <figure class="tile tile--sq hz" data-cursor="Look"><div class="frame"><div class="media" data-ph="plate:cup:52" data-alt="Flat white in croissant" data-i18n-alt="k209" data-par=".07" data-src="https://images.unsplash.com/photo-1769138886003-d6793017b178?auto=format&w=1200&q=78"></div></div><figcaption><b data-i18n="k68">Jutranji pult</b><span data-i18n="k69">Kavarna</span></figcaption></figure>
+      </div>
+      <div class="col col--b" data-drift="70">
+        <figure class="tile tile--arch hz" data-cursor="Look"><div class="frame"><div class="media" data-ph="hearth:53" data-alt="Ogenj na drva" data-i18n-alt="k210" data-par=".07" data-src="https://images.unsplash.com/photo-1770670644186-b3d930f75f5a?auto=format&w=1200&q=78"></div></div><figcaption><b data-i18n="k70">Ogenj</b><span data-i18n="k71">Vedno zakurjen</span></figcaption></figure>
+        <figure class="tile tile--wide hz" data-cursor="Look"><div class="frame"><div class="media" data-ph="room:hearth:54" data-alt="Topel prostor z jantarno svetlobo" data-i18n-alt="k211" data-par=".07" data-src="https://images.unsplash.com/photo-1764253414255-2f5b3511a08a?auto=format&w=1200&q=78"></div></div><figcaption><b data-i18n="k72">Miza v kotu</b><span data-i18n="k73">Večerja</span></figcaption></figure>
+      </div>
+      <div class="col col--c" data-drift="25">
+        <figure class="tile tile--tall hz" data-cursor="Look"><div class="frame"><div class="media" data-ph="still:55" data-alt="Steklenica vina in kozarca v svetlobi okna" data-i18n-alt="k212" data-par=".07" data-src="https://images.unsplash.com/photo-1605473172842-53a836f0ec66?auto=format&w=1200&q=78"></div></div><figcaption><b data-i18n="k74">Klet</b><span data-i18n="k75">Naravna vina</span></figcaption></figure>
+        <figure class="tile tile--tall hz" data-cursor="Look"><div class="frame"><div class="media" data-ph="room:bar:56" data-alt="Bar ponoči" data-i18n-alt="k213" data-par=".07" data-src="https://images.unsplash.com/photo-1640902106532-47dd3a2e833e?auto=format&w=1200&q=78"></div></div><figcaption><b data-i18n="k76">Bar</b><span data-i18n="k77">Pozno</span></figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 · MENU ============ -->
+<section class="menu-sec" id="menu" data-nav="dark" data-section-reveal aria-labelledby="menuTitle">
+  <div class="wrap g12">
+    <div class="menu__side">
+      <span class="label" data-i18n="k78"><i>05</i>Jedilnik</span>
+      <h2 class="h2" id="menuTitle" data-words data-i18n="k79">Napisan vsako <em>jutro.</em></h2>
+      <p class="lede" data-reveal data-i18n="k80">Kratek, sezonski in kuhan na ognju. Cene so v evrih. Z veseljem prilagodimo jedi alergijam in prehranskim željam – samo povejte ob rezervaciji.</p>
+      <div class="menu__img" aria-hidden="true">
+        <div class="media is-active" data-noreveal data-ph="plate:cup:61" data-src="https://images.unsplash.com/photo-1769138886003-d6793017b178?auto=format&w=900&q=76"></div>
+        <div class="media" data-noreveal data-ph="plate:duck:62" data-src="https://images.unsplash.com/photo-1603072995965-bd07b8fb582e?auto=format&w=900&q=76"></div>
+        <div class="media" data-noreveal data-ph="plate:cake:63" data-src="https://images.unsplash.com/photo-1693947471468-c1d404413a2f?auto=format&w=900&q=76"></div>
+        <div class="media" data-noreveal data-ph="still:64" data-src="https://images.unsplash.com/photo-1605473172842-53a836f0ec66?auto=format&w=900&q=76"></div>
+      </div>
+    </div>
+    <div class="menu__main">
+      <div class="tabs" role="tablist" aria-label="Razdelki jedilnika" data-i18n-aria="k184" id="tabs">
+        <span class="tabs__ind" id="tabInd"></span>
+        <button class="tab" role="tab" id="tab-0" aria-controls="panel-0" aria-selected="true" data-i18n="k81">Jutro <small>08–16</small></button>
+        <button class="tab" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="false" tabindex="-1" data-i18n="k82">Kuhinja <small>17:30</small></button>
+        <button class="tab" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1" data-i18n="k83">Sladko</button>
+        <button class="tab" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1" data-i18n="k84">Kozarec</button>
+      </div>
+
+      <div class="panel is-active" role="tabpanel" id="panel-0" aria-labelledby="tab-0">
+        <div class="panel__hd"><span data-i18n="k85">Kavarna in zajtrk</span><span data-i18n="k86">Tor – ned</span></div>
+        <div class="mi" style="--i:0"><div class="mi__top"><h4 data-i18n="k93">Kvasni kruh, maslo in marmelada</h4><i class="mi__dots"></i><span class="mi__price">€6</span></div><p data-i18n="k94">Vsako jutro pečen v žerjavici. Marmelada tedna.</p></div>
+        <div class="mi" style="--i:1"><div class="mi__top"><h4 data-i18n="k95">Mehko kuhano jajce, por z žerjavice, drobnjak <span class="mi__tag">V</span></h4><i class="mi__dots"></i><span class="mi__price">€12</span></div><p data-i18n="k96">Na popečenem kruhu, s holandsko omako iz rjavega masla.</p></div>
+        <div class="mi" style="--i:2"><div class="mi__top"><h4 data-i18n="k97">Ricotta palačinke s pečeno slivo <span class="mi__tag">V</span></h4><i class="mi__dots"></i><span class="mi__price">€13</span></div><p data-i18n="k98">Domači med, praženi lešniki.</p></div>
+        <div class="mi" style="--i:3"><div class="mi__top"><h4 data-i18n="k99">Šakšuka z dimljenim paradižnikom <span class="mi__tag">V</span> <span class="mi__tag">BG</span></h4><i class="mi__dots"></i><span class="mi__price">€14</span></div><p data-i18n="k100">Dve jajci, ovčji feta sir, ožgan ploščat kruh.</p></div>
+        <div class="mi" style="--i:4"><div class="mi__top"><h4 data-i18n="k101">Croissant, navaden ali z mandlji</h4><i class="mi__dots"></i><span class="mi__price">€4 / 5</span></div><p data-i18n="k102">S pekovskega pulta, pečen ob šestih.</p></div>
+        <div class="mi" style="--i:5"><div class="mi__top"><h4 data-i18n="k103">Flat white · Cortado · Filtrirana kava</h4><i class="mi__dots"></i><span class="mi__price">€3.6</span></div><p data-i18n="k104">Kava enega porekla, pražena v regiji. Ovseno mleko na željo.</p></div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1" hidden>
+        <div class="panel__hd"><span data-i18n="k88">Večerja z ognja</span><span data-i18n="k87">Tor – sob</span></div>
+        <div class="mi" style="--i:0"><div class="mi__top"><h4 data-i18n="k105">Por z žerjavice, lešnikov romesco <span class="mi__tag">VG</span></h4><i class="mi__dots"></i><span class="mi__price">€14</span></div><p data-i18n="k106">Staran šeri, olje iz kislice.</p></div>
+        <div class="mi" style="--i:1"><div class="mi__top"><h4 data-i18n="k107">Tartar iz rdeče pese, hrenov sneg <span class="mi__tag">V</span></h4><i class="mi__dots"></i><span class="mi__price">€13</span></div><p data-i18n="k108">Ržen čips, kisla smetana.</p></div>
+        <div class="mi" style="--i:2"><div class="mi__top"><h4 data-i18n="k109">V bukovem dimu prekajena postrv, smetana s kislico</h4><i class="mi__dots"></i><span class="mi__price">€26</span></div><p data-i18n="k110">Vložena šalotka, postrvja ikra, koper.</p></div>
+        <div class="mi" style="--i:3"><div class="mi__top"><h4 data-i18n="k111">Zelena, pečena v pepelu <span class="mi__tag">V</span> <span class="mi__tag">BG</span></h4><i class="mi__dots"></i><span class="mi__price">€22</span></div><p data-i18n="k45">Rjavo maslo, praženi orehi, črni česen.</p></div>
+        <div class="mi" style="--i:4"><div class="mi__top"><h4 data-i18n="k112">Zorjena račja prsa, omaka iz smokvinih listov <span class="mi__tag">BG</span></h4><i class="mi__dots"></i><span class="mi__price">€34</span></div><p data-i18n="k113">Pečene smokve, divji ohrovt.</p></div>
+        <div class="mi" style="--i:5"><div class="mi__top"><h4 data-i18n="k114">Počasi pečena jagnječja plečka, za dva</h4><i class="mi__dots"></i><span class="mi__price">€68</span></div><p data-i18n="k115">Samo ob nedeljah. Naročite ob rezervaciji.</p></div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>
+        <div class="panel__hd"><span data-i18n="k89">Nekaj sladkega</span><span data-i18n="k90">Ves dan</span></div>
+        <div class="mi" style="--i:0"><div class="mi__top"><h4 data-i18n="k116">Sirova torta z žganim medom <span class="mi__tag">V</span></h4><i class="mi__dots"></i><span class="mi__price">€11</span></div><p data-i18n="k47">Pečena ob ustju ognja, morska sol, kutina.</p></div>
+        <div class="mi" style="--i:1"><div class="mi__top"><h4 data-i18n="k117">V pepelu pečena hruška <span class="mi__tag">V</span></h4><i class="mi__dots"></i><span class="mi__price">€10</span></div><p data-i18n="k118">Sladoled iz rjavega masla, praženi ovseni kosmiči.</p></div>
+        <div class="mi" style="--i:2"><div class="mi__top"><h4 data-i18n="k119">Temna čokolada, oljčno olje, sol <span class="mi__tag">VG</span> <span class="mi__tag">BG</span></h4><i class="mi__dots"></i><span class="mi__price">€10</span></div><p data-i18n="k120">Postrežena topla, na željo z žlico hladne smetane.</p></div>
+        <div class="mi" style="--i:3"><div class="mi__top"><h4 data-i18n="k121">Affogato z lešniki <span class="mi__tag">V</span></h4><i class="mi__dots"></i><span class="mi__price">€7</span></div><p data-i18n="k122">Lešnikov gelato, dvojni espresso.</p></div>
+        <div class="mi" style="--i:4"><div class="mi__top"><h4 data-i18n="k123">Lokalni siri s kutino</h4><i class="mi__dots"></i><span class="mi__price">€12</span></div><p data-i18n="k124">Trije siri malih sirarn, kvasni krekerji.</p></div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" hidden>
+        <div class="panel__hd"><span data-i18n="k91">Vino, koktajli in brezalkoholno</span><span data-i18n="k92">Od 11:00</span></div>
+        <div class="mi" style="--i:0"><div class="mi__top"><h4>Sorrel spritz</h4><i class="mi__dots"></i><span class="mi__price">€11</span></div><p data-i18n="k125">Hišni liker iz kislice, peneče vino, soda, limona.</p></div>
+        <div class="mi" style="--i:1"><div class="mi__top"><h4 data-i18n="k126">Dimljeni negroni</h4><i class="mi__dots"></i><span class="mi__price">€12</span></div><p data-i18n="k127">Prekajen z bukovino, pomarančno olje, ena velika kocka ledu.</p></div>
+        <div class="mi" style="--i:2"><div class="mi__top"><h4 data-i18n="k128">Naravno vino na kozarec</h4><i class="mi__dots"></i><span class="mi__price" data-i18n="k129">od €7</span></div><p data-i18n="k130">Mali vinarji iz Vipavske, Brd in širše. Vprašajte, kaj je odprto.</p></div>
+        <div class="mi" style="--i:3"><div class="mi__top"><h4 data-i18n="k131">Kombuča tedna <span class="mi__tag">VG</span></h4><i class="mi__dots"></i><span class="mi__price">€5</span></div><p data-i18n="k132">Varjena v kleti pod nami.</p></div>
+        <div class="mi" style="--i:4"><div class="mi__top"><h4 data-i18n="k133">Shrub iz rožnate grenivke <span class="mi__tag">0%</span></h4><i class="mi__dots"></i><span class="mi__price">€6</span></div><p data-i18n="k134">Kisel, penast, zeliščen. Odlično se ujame z dimom.</p></div>
+      </div>
+
+      <div class="menu__note"><span data-i18n="k135">V vegetarijansko</span><span data-i18n="k136">VG vegansko</span><span data-i18n="k137">BG brez glutena</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 · RESERVATIONS ============ -->
+<section class="reserve" id="reserve" data-nav="dark" aria-labelledby="resTitle">
+  <div class="reserve__sun" data-drift="-90" aria-hidden="true"></div>
+  <div class="wrap g12">
+    <div class="reserve__copy">
+      <span class="label" data-reveal data-i18n="k138"><i>06</i>Rezervacije</span>
+      <h2 class="h2" id="resTitle" data-words data-i18n="k139">Rezervirajte mesto <em>ob ognju.</em></h2>
+      <p class="lede" data-reveal data-i18n="k140">Mize za večerjo odpiramo trideset dni vnaprej. V kavarno lahko vstopite kadarkoli. Za skupine nad osem oseb ali najem ognjiščne sobe nas prosimo pokličite.</p>
+      <div class="reserve__call" data-reveal><small data-i18n="k141">Pokličite kuhinjo</small><a href="tel:+38610000000">+386 1 000 00 00</a></div>
+    </div>
+
+    <div class="res" id="res" data-reveal data-d="120">
+      <form class="res__form" id="resForm" novalidate>
+        <div class="res__row">
+          <div class="fld"><label for="rDate" data-i18n="k142">Datum</label><input class="inp" id="rDate" type="date" required><span class="msg" data-i18n="k148">Izberite datum.</span></div>
+          <div class="fld"><span class="l" id="gl" data-i18n="k143">Gostje</span><div class="step" role="group" aria-labelledby="gl"><button type="button" id="gMinus" aria-label="Manj gostov" data-i18n-aria="k185">−</button><output id="gOut" aria-live="polite">2</output><button type="button" id="gPlus" aria-label="Več gostov" data-i18n-aria="k186">+</button></div></div>
+        </div>
+        <div class="fld"><span class="l" id="tl" data-i18n="k144">Ura</span>
+          <div class="chips" role="radiogroup" aria-labelledby="tl" id="chips">
+            <button type="button" class="chip" role="radio" aria-checked="false">17:30</button>
+            <button type="button" class="chip" role="radio" aria-checked="false">18:30</button>
+            <button type="button" class="chip" role="radio" aria-checked="true">19:30</button>
+            <button type="button" class="chip" role="radio" aria-checked="false">20:30</button>
+            <button type="button" class="chip" role="radio" aria-checked="false">21:30</button>
+          </div>
+        </div>
+        <div class="res__row">
+          <div class="fld"><label for="rName" data-i18n="k145">Ime</label><input class="inp" id="rName" type="text" autocomplete="name" placeholder="Vaše ime" data-i18n-ph="k193" required><span class="msg" data-i18n="k149">Za rezervacijo potrebujemo ime.</span></div>
+          <div class="fld"><label for="rContact" data-i18n="k146">E-pošta ali telefon</label><input class="inp" id="rContact" type="text" autocomplete="email" placeholder="ime@primer.si" data-i18n-ph="k194" required><span class="msg" data-i18n="k150">Vnesite veljaven e-naslov ali telefonsko številko.</span></div>
+        </div>
+        <div class="fld"><label for="rNote" data-i18n="k147">Ali moramo kaj vedeti? <span style="opacity:.6;text-transform:none;letter-spacing:0">(neobvezno)</span></label><input class="inp" id="rNote" type="text" placeholder="Alergije, praznovanja, otroški stolček …" data-i18n-ph="k195"></div>
+        <p class="res__note" id="resNote" aria-live="polite"></p>
+        <div class="res__foot">
+          <small data-i18n="k151">Rezervacije potrdimo v eni uri, v obratovalnem času.</small>
+          <button class="btn btn--pine btn--lg" type="submit" data-magnetic><span data-i18n="k152">Rezerviraj mizo</span> <svg class="btn__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </form>
+      <div class="res__done" id="resDone" aria-live="polite">
+        <svg viewBox="0 0 84 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="42" cy="42" r="38"/><path d="M26 43l11 11 21-24"/></svg>
+        <h3 data-i18n="k153">Se vidimo <em>kmalu.</em></h3>
+        <strong id="resSum"></strong>
+        <p data-i18n="k154">Hvala – vaše povpraševanje smo prejeli. Kmalu se vam oglasimo s potrditvijo mize.</p>
+        <button class="btn btn--pine" type="button" id="resAgain" data-i18n="k155">Nova rezervacija</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8 · LOCATION & CONTACT ============ -->
+<section class="visit" id="visit" data-nav="dark" aria-labelledby="visitTitle">
+  <div class="wrap g12">
+    <div class="visit__a">
+      <span class="label" data-reveal data-i18n="k156"><i>07</i>Kje smo</span>
+      <h2 class="h2" id="visitTitle" data-words data-i18n="k157">Ob reki, <em>nekaj korakov</em> od starega mesta.</h2>
+      <div class="visit__status" data-reveal><i class="dot js-dot"></i><span class="js-status">Odprto danes</span></div>
+      <div class="contact" data-reveal>
+        <div><h5 data-i18n="k158">Naslov</h5><p data-i18n="k160">Vrtna ulica 12<br>1000 Ljubljana<br>Slovenija</p></div>
+        <div><h5 data-i18n="k159">Kontakt</h5><p><a href="tel:+38610000000">+386 1 000 00 00</a><br><a href="mailto:hello@sorrel.example">hello@sorrel.example</a><br><a href="#" aria-label="Instagram (začasna povezava)" data-i18n-aria="k189">@sorrel.kitchen</a></p></div>
+      </div>
+      <table class="hours" data-reveal aria-label="Delovni čas" data-i18n-aria="k188">
+        <tbody>
+          <tr data-days="1"><th scope="row" data-i18n="k161">Ponedeljek</th><td data-i18n="k165">Zaprto</td></tr>
+          <tr data-days="2,3,4"><th scope="row" data-i18n="k162">Torek – četrtek</th><td>08:00 – 23:00</td></tr>
+          <tr data-days="5,6"><th scope="row" data-i18n="k163">Petek – sobota</th><td>08:00 – 00:00</td></tr>
+          <tr data-days="0"><th scope="row" data-i18n="k164">Nedelja</th><td>09:00 – 17:00</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:14px;font-size:.86rem;opacity:.6" data-reveal data-i18n="k166">Kavarna do 16:00 · Kuhinja od 17:30 · Nedelja je dolgo kosilo.</p>
+    </div>
+    <div class="visit__b" data-reveal data-d="120">
+      <div class="map" role="img" aria-label="Zemljevid z lokalom Sorrel ob reki, nekaj korakov od starega mesta" data-i18n-aria="k190">
+        <svg class="bg" viewBox="0 0 800 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="800" height="760" fill="#1B1712"/>
+          <g fill="#282219">
+            <rect x="40" y="40" width="150" height="110" rx="6"/><rect x="215" y="40" width="120" height="110" rx="6"/><rect x="360" y="40" width="170" height="90" rx="6"/><rect x="560" y="60" width="190" height="120" rx="6"/>
+            <rect x="40" y="180" width="100" height="120" rx="6"/><rect x="165" y="180" width="170" height="100" rx="6"/><rect x="360" y="155" width="150" height="120" rx="6"/><rect x="535" y="205" width="215" height="90" rx="6"/>
+            <rect x="40" y="330" width="130" height="90" rx="6"/><rect x="195" y="310" width="140" height="110" rx="6"/><rect x="560" y="325" width="190" height="100" rx="6"/>
+            <rect x="40" y="560" width="160" height="150" rx="6"/><rect x="225" y="590" width="140" height="120" rx="6"/><rect x="480" y="540" width="130" height="170" rx="6"/><rect x="635" y="560" width="115" height="150" rx="6"/>
+          </g>
+          <rect x="365" y="300" width="130" height="90" rx="46" fill="#2E3527"/>
+          <path d="M-40 490C120 430 250 520 400 455S680 380 850 430" fill="none" stroke="#20302C" stroke-width="84" stroke-linecap="round"/>
+          <path d="M-40 490C120 430 250 520 400 455S680 380 850 430" fill="none" stroke="#2B3F39" stroke-width="56" stroke-linecap="round" opacity=".8"/>
+          <g fill="none" stroke="#3C362B" stroke-linecap="round">
+            <path d="M-20 300H820" stroke-width="16"/><path d="M340 -20V780" stroke-width="16"/><path d="M-20 160H820" stroke-width="8"/><path d="M-20 660H820" stroke-width="8"/>
+            <path d="M180 -20V780" stroke-width="8"/><path d="M540 -20V780" stroke-width="8"/><path d="M745 -20V780" stroke-width="8"/>
+            <path d="M340 300 460 250 640 250" stroke-width="10"/>
+          </g>
+          <g stroke="#3C362B" stroke-width="10"><path d="M340 420V500" /><path d="M540 420V470"/></g>
+          <text x="120" y="500" font-family="Georgia,serif" font-style="italic" font-size="20" fill="#7E9A8C" transform="rotate(-8 120 500)" data-i18n="k167">reka</text>
+        </svg>
+        <div class="pin"><div class="pin__tag">Sorrel<em>.</em></div><div class="pin__stem"></div><div class="pin__dot"></div></div>
+        <a class="btn btn--pine map__cta" href="https://www.google.com/maps/search/?api=1&amp;query=Vrtna+ulica+12+Ljubljana" target="_blank" rel="noopener"><span data-i18n="k168">Navodila za pot</span> <svg class="btn__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10"/></svg></a>
+      </div>
+      <div class="visit__ways"><span data-i18n="k169">4 minute hoje od glavnega mostu</span><span data-i18n="k170">Stojala za kolesa pred vhodom</span><span data-i18n="k171">Vhod brez stopnic</span></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ 9 · FOOTER ============ -->
+<footer class="footer" id="footer" data-nav="dark">
+  <div class="footer__top">
+    <div class="news">
+      <p data-i18n="k172">Pisma iz <em>kuhinje.</em></p>
+      <form id="newsForm" novalidate>
+        <label class="sr" for="nEmail" data-i18n="k173">E-naslov</label>
+        <input id="nEmail" type="email" placeholder="Vaš e-naslov" data-i18n-ph="k196" autocomplete="email">
+        <button type="submit" aria-label="Naročite se" data-i18n-aria="k187"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+      </form>
+      <p class="thanks" id="newsThanks" aria-live="polite"></p>
+    </div>
+    <div><h6 data-i18n="k174">Razišči</h6><ul><li><a href="#story" data-i18n="k9">Naša zgodba</a></li><li><a href="#dishes" data-i18n="k10">Značilne jedi</a></li><li><a href="#atmosphere" data-i18n="k2">Prostor</a></li><li><a href="#menu" data-i18n="k3">Jedilnik</a></li></ul></div>
+    <div><h6 data-i18n="k4">Obisk</h6><ul><li><a href="#reserve" data-i18n="k12">Rezervacije</a></li><li><a href="#visit" data-i18n="k176">Ure in zemljevid</a></li><li><a href="tel:+38610000000">+386 1 000 00 00</a></li><li><a href="mailto:hello@sorrel.example">hello@sorrel.example</a></li></ul></div>
+    <div><h6 data-i18n="k175">Sledite</h6><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="#" data-i18n="k177">Dnevnik</a></li></ul></div>
+  </div>
+  <div class="footer__word" aria-hidden="true"><span><b style="--i:0">S</b></span><span><b style="--i:1">o</b></span><span><b style="--i:2">r</b></span><span><b style="--i:3">r</b></span><span><b style="--i:4">e</b></span><span><b style="--i:5">l</b></span><span><b style="--i:6"><i>.</i></b></span></div>
+  <div class="footer__bot"><span data-i18n="k178">© 2026 Sorrel kuhinja in kavarna. Kuhano na ognju, narejeno s potrpežljivostjo.</span><a class="totop" href="#top"><span data-i18n="k179">Nazaj na vrh</span> <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20V5M6 11l6-6 6 6"/></svg></i></a></div>
+</footer>
+<script>
+/* =====================================================================
+   IMAGES
+   Every picture on the page is an element with class="media".
+   • Until you add real photos it draws a generated placeholder
+     (data-ph="type:variant:seed").
+   • To use a real photo, just add:   data-src="images/your-photo.jpg"
+     (and keep data-alt="…" for accessibility). Nothing else changes —
+     the reveal, parallax and hover-zoom all still work.
+   ===================================================================== */
+(function(){
+'use strict';
+
+/* ---------------------------------------------------------------
+   1. PLACEHOLDER ART  (generated SVG "photographs")
+   --------------------------------------------------------------- */
+const ART=(()=>{
+  let uid=0;
+  const rng=seed=>{let s=(Math.imul(seed|0,2654435761)>>>0)||1;return()=>((s=(Math.imul(s,1664525)+1013904223)>>>0)/4294967296)};
+  const n=v=>+v.toFixed(1);
+  const svg=(w,h,defs,body)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" focusable="false" aria-hidden="true"><defs>${defs.join('')}</defs>${body}</svg>`;
+  const ctx=()=>{const defs=[];const g=(type,attrs,stops)=>{const id='g'+(++uid);defs.push(`<${type}Gradient id="${id}" ${attrs}>${stops.map(([o,c,a])=>`<stop offset="${o}" stop-color="${c}"${a==null?'':` stop-opacity="${a}"`}/>`).join('')}</${type}Gradient>`);return `url(#${id})`};return{defs,g}};
+  const shadow=(g,cx,cy,rx,ry,o=.5)=>`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${g('radial','',[[0,'#000',o],[.7,'#000',o*.35],[1,'#000',0]])}"/>`;
+
+  /* ----- plated food (top-down) ----- */
+  const TBL={leek:['#3b3a31','#1b1c17'],trout:['#22332f','#101a18'],duck:['#3a2622','#170e0c'],cake:['#d9caa9','#b7a47e'],celeriac:['#2f2d28','#171614'],bread:['#5b3e27','#2f1d0f'],cup:['#cdbb9a','#a58c68']};
+  const PLT={leek:['#f4efe4','#d6ceba'],trout:['#f2ede1','#cdc5b1'],duck:['#232a2c','#0c1012'],cake:['#28332e','#121a17'],celeriac:['#eae2d2','#c2b8a2']};
+  const FOOD={
+    leek(r,g){
+      let s=`<path d="M235 585C300 480 470 440 615 385 660 480 540 575 430 618 350 650 285 640 235 585Z" fill="#b8481f"/><path d="M262 570C330 500 470 470 590 420" stroke="#e8804a" stroke-width="10" fill="none" opacity=".55" stroke-linecap="round"/>`;
+      for(let i=0;i<4;i++){const y=438+i*42;s+=`<g transform="rotate(${-13+i*2.5} 400 ${y})"><rect x="240" y="${y-19}" width="330" height="38" rx="19" fill="#22180f"/><rect x="250" y="${y-12}" width="310" height="24" rx="12" fill="#6b8c3f"/><rect x="258" y="${y-14}" width="290" height="8" rx="4" fill="#160e07" opacity=".75"/></g>`}
+      for(let i=0;i<46;i++){const a=r()*6.28,d=Math.sqrt(r())*170;s+=`<circle cx="${n(400+Math.cos(a)*d)}" cy="${n(500+Math.sin(a)*d)}" r="${n(3+r()*7)}" fill="${r()>.5?'#8a5a2b':'#b98550'}"/>`}
+      for(let i=0;i<9;i++){const a=r()*6.28,d=60+r()*110,x=400+Math.cos(a)*d,y=500+Math.sin(a)*d;s+=`<ellipse cx="${n(x)}" cy="${n(y)}" rx="15" ry="6" fill="#4d7a2e" transform="rotate(${n(r()*180)} ${n(x)} ${n(y)})"/>`}
+      return s},
+    trout(r,g){
+      let s=`<path d="M470 405C400 400 300 430 250 500 235 545 275 590 340 600 440 616 570 570 580 500 585 450 540 410 470 405Z" fill="#f0a47a"/><path d="M300 520C380 480 470 500 560 470" stroke="#fbd0b3" stroke-width="14" fill="none" stroke-linecap="round" opacity=".7"/><path d="M270 560C350 520 470 545 570 515" stroke="#e5825a" stroke-width="10" fill="none" stroke-linecap="round" opacity=".6"/><path d="M250 640C340 700 480 700 570 620 500 655 350 645 250 640Z" fill="#cfdca6" opacity=".95"/>`;
+      for(let i=0;i<26;i++){const x=320+r()*220,y=430+r()*170;s+=`<circle cx="${n(x)}" cy="${n(y)}" r="${n(5+r()*4)}" fill="#e5591f"/><circle cx="${n(x-1.5)}" cy="${n(y-2)}" r="1.8" fill="#fff" opacity=".7"/>`}
+      for(let i=0;i<9;i++){const x=290+r()*260,y=440+r()*170;s+=`<path d="M${n(x)} ${n(y)}l10 -14 4 16 12 -6 -8 14z" fill="#5c8a3a"/>`}
+      return s},
+    duck(r,g){
+      let s=`<path d="M225 615C330 700 500 705 615 600 520 645 340 635 225 615Z" fill="#2a1512"/>`;
+      for(let i=0;i<5;i++)s+=`<g transform="rotate(${-22+i*9} 400 520) translate(${i*22} 0)"><rect x="250" y="440" width="150" height="190" rx="26" fill="#7a2a2c"/><rect x="250" y="440" width="150" height="26" rx="13" fill="#e9d2a8"/><rect x="268" y="480" width="112" height="120" rx="20" fill="#a13a3a" opacity=".55"/></g>`;
+      [[575,410],[520,590]].forEach(([x,y],k)=>{s+=`<circle cx="${x}" cy="${y}" r="${k?40:48}" fill="#4b2a45"/><circle cx="${x}" cy="${y}" r="${k?27:33}" fill="#c46a7a"/>`;for(let i=0;i<10;i++)s+=`<circle cx="${n(x+(r()-.5)*36)}" cy="${n(y+(r()-.5)*36)}" r="2" fill="#f0d9b8"/>`});
+      for(let i=0;i<6;i++){const x=270+r()*90,y=560+r()*90;s+=`<ellipse cx="${n(x)}" cy="${n(y)}" rx="30" ry="12" fill="#2f5a34" transform="rotate(${n(r()*180)} ${n(x)} ${n(y)})"/>`}
+      return s},
+    cake(r,g){
+      let s=`<circle cx="400" cy="500" r="158" fill="#d5a35c"/><circle cx="400" cy="500" r="146" fill="${g('radial','cx=".4" cy=".35" r=".8"',[[0,'#8a4e22'],[.6,'#5a2f14'],[1,'#2e1608']])}"/>`;
+      for(let i=0;i<12;i++){const a=r()*6.28,d=Math.sqrt(r())*110;s+=`<circle cx="${n(400+Math.cos(a)*d)}" cy="${n(500+Math.sin(a)*d)}" r="${n(5+r()*9)}" fill="#f1b84a" opacity=".85"/>`}
+      for(let i=0;i<3;i++){const a=i*2.1+.4,x=400+Math.cos(a)*205,y=500+Math.sin(a)*205;s+=`<ellipse cx="${n(x)}" cy="${n(y)}" rx="34" ry="20" fill="#e7b979" stroke="#c98a4a" stroke-width="4" transform="rotate(${n(a*57)} ${n(x)} ${n(y)})"/>`}
+      for(let i=0;i<26;i++){const a=r()*6.28,d=Math.sqrt(r())*140;s+=`<rect x="${n(400+Math.cos(a)*d)}" y="${n(500+Math.sin(a)*d)}" width="4" height="4" fill="#fff" opacity=".8"/>`}
+      return s},
+    celeriac(r,g,defs){
+      const id='c'+(++uid);defs.push(`<clipPath id="${id}"><circle cx="400" cy="500" r="142"/></clipPath>`);
+      let s=`<circle cx="400" cy="500" r="142" fill="${g('radial','cx=".4" cy=".35" r=".8"',[[0,'#dcae6e'],[1,'#8a5a2e']])}"/><g clip-path="url(#${id})" stroke="#4a2f16" stroke-width="3" opacity=".4">`;
+      for(let i=-4;i<12;i++)s+=`<path d="M${230+i*26} 340L${230+i*26+240} 660"/><path d="M${230+i*26+240} 340L${230+i*26} 660"/>`;
+      s+='</g>';
+      for(let i=0;i<8;i++)s+=`<circle cx="${n(340+r()*120)}" cy="${n(440+r()*120)}" r="${n(11+r()*12)}" fill="#f6e6b0" opacity=".92"/>`;
+      for(let i=0;i<9;i++){const a=r()*6.28,d=110+r()*70,x=400+Math.cos(a)*d,y=500+Math.sin(a)*d;s+=`<ellipse cx="${n(x)}" cy="${n(y)}" rx="24" ry="9" fill="#4d7a2e" transform="rotate(${n(a*57)} ${n(x)} ${n(y)})"/>`}
+      return s}
+  };
+  const bread=(r,g)=>{
+    let s=`<g transform="rotate(-9 400 500)"><rect x="150" y="215" width="500" height="570" rx="34" fill="${g('linear','x1="0" y1="0" x2="1" y2="1"',[[0,'#b98b55'],[1,'#8b6034']])}"/>`;
+    for(let i=0;i<14;i++)s+=`<path d="M${170+r()*40} ${240+i*38}H${590+r()*40}" stroke="#5a3a1a" stroke-width="2" opacity=".18"/>`;
+    for(let i=0;i<3;i++){
+      s+=`<g transform="translate(${200+i*34} ${330+i*140}) rotate(${(i-1)*5})"><path d="M0 100C0 20 70-22 140-22S280 20 280 100V140H0Z" fill="#e8d1a0" stroke="#7c4a1e" stroke-width="16" stroke-linejoin="round"/>`;
+      for(let k=0;k<9;k++)s+=`<ellipse cx="${n(40+r()*200)}" cy="${n(40+r()*70)}" rx="${n(8+r()*14)}" ry="${n(5+r()*8)}" fill="#c9a86c" opacity=".55"/>`;
+      s+='</g>';
+    }
+    s+=`<circle cx="545" cy="690" r="62" fill="#d9d2c0"/><circle cx="545" cy="690" r="47" fill="#f4dc8a"/><circle cx="535" cy="678" r="14" fill="#fff" opacity=".35"/>`;
+    for(let i=0;i<20;i++)s+=`<rect x="${n(200+r()*400)}" y="${n(260+r()*500)}" width="4" height="4" fill="#fff" opacity=".7"/>`;
+    return s+'</g>'};
+  const cup=(r,g)=>{
+    let s=shadow(g,432,548,300,290);
+    s+=`<circle cx="400" cy="500" r="262" fill="${g('radial','cx=".38" cy=".34" r=".8"',[[0,'#f8f3e8'],[1,'#d2c8b2']])}"/><circle cx="400" cy="500" r="222" fill="none" stroke="#000" stroke-opacity=".08" stroke-width="3"/>`;
+    s+=`<rect x="520" y="468" width="160" height="62" rx="31" fill="#efe8d8" stroke="#000" stroke-opacity=".08"/>`;
+    s+=`<circle cx="400" cy="500" r="176" fill="${g('radial','cx=".4" cy=".35" r=".8"',[[0,'#fbf7ee'],[1,'#d9cfba']])}"/><circle cx="400" cy="500" r="150" fill="#e8dfcb"/><circle cx="400" cy="500" r="138" fill="${g('radial','cx=".4" cy=".35" r=".8"',[[0,'#6a4426'],[1,'#2b170b']])}"/>`;
+    s+=`<circle cx="400" cy="500" r="104" fill="#f4e6cd" opacity=".96"/>`;
+    for(let i=0;i<6;i++)s+=`<path d="M${338+i*4} ${455+i*24}Q400 ${418+i*24} ${462-i*4} ${455+i*24}" fill="none" stroke="#a9763f" stroke-width="10" stroke-linecap="round" opacity=".55"/>`;
+    for(let i=0;i<7;i++){const t=i/6,a=Math.PI*(1+t),x=250+Math.cos(a)*140,y=875+Math.sin(a)*120,sz=Math.sin(t*Math.PI);s+=`<ellipse cx="${n(x)}" cy="${n(y)}" rx="${n(18+sz*26)}" ry="${n(32+sz*34)}" transform="rotate(${n(a*57.3+90)} ${n(x)} ${n(y)})" fill="#d9993f" stroke="#a5661f" stroke-width="3"/>`}
+    for(let i=0;i<40;i++)s+=`<circle cx="${n(120+r()*260)}" cy="${n(780+r()*160)}" r="${n(1.5+r()*2)}" fill="#e9c988" opacity=".6"/>`;
+    return s};
+
+  const plate=(kind='leek',seed=1)=>{
+    const r=rng(seed),{defs,g}=ctx(),T=TBL[kind]||TBL.leek;
+    let b=`<rect width="800" height="1000" fill="${g('linear','x1="0" y1="0" x2="1" y2="1"',[[0,T[0]],[1,T[1]]])}"/>`;
+    for(let i=0;i<16;i++)b+=`<rect y="${n(i*64+r()*30)}" width="800" height="${n(10+r()*34)}" fill="#fff" opacity="${(.015+r()*.03).toFixed(3)}"/>`;
+    if(kind==='bread')b+=bread(r,g);
+    else if(kind==='cup')b+=cup(r,g);
+    else{
+      const P=PLT[kind]||PLT.leek;
+      b+=shadow(g,430,552,302,288);
+      b+=`<circle cx="400" cy="500" r="258" fill="${g('radial','cx=".38" cy=".34" r=".8"',[[0,P[0]],[1,P[1]]])}"/><circle cx="400" cy="500" r="252" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2"/><circle cx="400" cy="500" r="190" fill="#000" opacity=".07"/>`;
+      b+=(FOOD[kind]||FOOD.leek)(r,g,defs);
+    }
+    return svg(800,1000,defs,b)};
+
+  /* ----- the hearth ----- */
+  const flame=(cx,base,h,w)=>`M${cx-w} ${base}C${cx-w*1.25} ${base-h*.4} ${cx-w*.2} ${base-h*.6} ${cx} ${base-h}C${cx+w*.3} ${base-h*.6} ${cx+w*1.3} ${base-h*.4} ${cx+w} ${base}Z`;
+  const hearth=(_,seed=1)=>{
+    const r=rng(seed),{defs,g}=ctx();
+    let b=`<rect width="800" height="1000" fill="${g('linear','x1="0" y1="0" x2="0" y2="1"',[[0,'#0d0c0a'],[1,'#22160e']])}"/>`;
+    for(let row=0;row<17;row++)for(let c=-1;c<8;c++){const x=c*110+(row%2?55:0),y=row*62;b+=`<rect x="${x+2}" y="${y+2}" width="106" height="58" rx="5" fill="#fff" opacity="${(.02+r()*.045).toFixed(3)}"/>`}
+    const arch='M150 1000V470A250 250 0 0 1 650 470V1000Z';
+    b+=`<path d="${arch}" fill="#080402"/>`;
+    b+=`<path d="${arch}" fill="${g('radial','cx=".5" cy=".82" r=".7"',[[0,'#ffb34a',.95],[.35,'#e8541f',.7],[1,'#000',0]])}"/>`;
+    b+=`<path d="M170 1000V480A230 230 0 0 1 630 480V1000Z" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="6"/>`;
+    [[230,1000,'#e8541f',420,100],[540,1000,'#e8541f',360,90],[385,1000,'#f28a2b',560,110],[470,1000,'#f28a2b',470,90],[400,1000,'#ffc35a',400,72],[350,1000,'#ffc35a',330,60],[410,1000,'#fff0c2',250,42]].forEach(([cx,base,c,h,w],i)=>{b+=`<path d="${flame(cx,base-40-(i%3)*10,h,w)}" fill="${c}" opacity="${i<2?.85:.95}"/>`});
+    b+=`<g transform="rotate(-8 400 900)"><rect x="220" y="880" width="360" height="62" rx="31" fill="#1a0f08"/><rect x="230" y="884" width="340" height="14" rx="7" fill="#ff8a3a" opacity=".65"/></g><g transform="rotate(10 400 930)"><rect x="240" y="920" width="330" height="58" rx="29" fill="#241409"/><rect x="250" y="924" width="300" height="12" rx="6" fill="#ff7a2a" opacity=".6"/></g>`;
+    for(let i=0;i<22;i++)b+=`<circle cx="${n(280+r()*250)}" cy="${n(320+r()*420)}" r="${n(1.5+r()*3.5)}" fill="#ffc35a" opacity="${(.3+r()*.7).toFixed(2)}"/>`;
+    return svg(800,1000,defs,b)};
+
+  /* ----- rooms (wide) ----- */
+  const ROOMS={
+    evening:{wall:['#33211a','#150e0a'],floor:['#1c130d','#0a0605'],win:['#9fc7bf','#2c5754'],lamp:'#ffc46b',shaft:.11,top:'#1a110c',tbl:'#4a3020'},
+    morning:{wall:['#efe4cd','#cdb992'],floor:['#b99b72','#8d7150'],win:['#fffaf0','#ffe4a8'],lamp:'#fff0c4',shaft:.3,top:'#e3d6bb',tbl:'#a37c50'},
+    hearth:{wall:['#41231a','#1a0d08'],floor:['#26150d','#0e0705'],win:['#f4a352','#a8431f'],lamp:'#ffb35a',shaft:.16,top:'#2a160e',tbl:'#5a3520'},
+    bar:{wall:['#18342c','#0a1814'],floor:['#0f1f1a','#060c0a'],win:['#d8bb78','#6f5a2e'],lamp:'#ffd08a',shaft:.12,top:'#0e1e19',tbl:'#2f5a4a'}
+  };
+  const room=(v='evening',seed=1)=>{
+    const r=rng(seed),C=ROOMS[v]||ROOMS.evening,{defs,g}=ctx();
+    let b=`<rect width="1600" height="900" fill="${g('linear','x1="0" y1="0" x2="0" y2="1"',[[0,C.wall[0]],[1,C.wall[1]]])}"/><rect width="1600" height="90" fill="${C.top}" opacity=".55"/>`;
+    const xs=[330,690,1050];
+    xs.forEach(x=>{
+      const P=`M${x} 650V320A110 110 0 0 1 ${x+220} 320V650Z`;
+      b+=`<path d="${P}" fill="${g('linear','x1="0" y1="0" x2="0" y2="1"',[[0,C.win[0]],[1,C.win[1]]])}"/><path d="M${x+110} 210V650M${x} 470H${x+220}" stroke="${C.wall[1]}" stroke-width="7" opacity=".85"/><path d="${P}" fill="none" stroke="${C.wall[1]}" stroke-width="14"/>`});
+    b+=`<rect y="650" width="1600" height="250" fill="${g('linear','x1="0" y1="0" x2="0" y2="1"',[[0,C.floor[0]],[1,C.floor[1]]])}"/><rect y="646" width="1600" height="8" fill="#000" opacity=".25"/>`;
+    xs.forEach(x=>{b+=`<polygon points="${x},650 ${x+220},650 ${x+340},900 ${x-120},900" fill="${C.lamp}" opacity="${C.shaft}"/>`});
+    [[420,790,130],[800,830,150],[1180,790,130],[1500,850,105]].forEach(([tx,ty,rx])=>{
+      b+=`<rect x="${tx-215}" y="${ty-125}" width="70" height="150" rx="16" fill="${C.floor[1]}" opacity=".9"/><rect x="${tx+145}" y="${ty-125}" width="70" height="150" rx="16" fill="${C.floor[1]}" opacity=".9"/>`;
+      b+=`<rect x="${tx-6}" y="${ty}" width="12" height="90" fill="#000" opacity=".55"/><ellipse cx="${tx}" cy="${ty}" rx="${rx}" ry="${rx*.19}" fill="${C.tbl}"/><ellipse cx="${tx-14}" cy="${ty-3}" rx="${rx*.7}" ry="${rx*.11}" fill="#fff" opacity=".1"/>`;
+      b+=`<circle cx="${tx}" cy="${ty-24}" r="46" fill="${g('radial','',[[0,C.lamp,.7],[1,C.lamp,0]])}"/><rect x="${tx-4}" y="${ty-22}" width="8" height="20" rx="3" fill="#f3e6c8"/>`});
+    [[520,205],[800,150],[1080,215]].forEach(([x,h])=>{
+      b+=`<path d="M${x} 0V${h}" stroke="#000" stroke-opacity=".6" stroke-width="3"/><circle cx="${x}" cy="${h+56}" r="170" fill="${g('radial','',[[0,C.lamp,.55],[1,C.lamp,0]])}"/><path d="M${x-48} ${h+46}A48 48 0 0 1 ${x+48} ${h+46}Z" fill="#111"/><circle cx="${x}" cy="${h+52}" r="11" fill="${C.lamp}"/>`});
+    [[70,720,120],[150,640,74],[1540,700,110],[1470,620,66]].forEach(([x,y,rr])=>{b+=`<circle cx="${x}" cy="${y}" r="${rr}" fill="#2f5a3a" opacity=".92"/><circle cx="${x-rr*.3}" cy="${y-rr*.3}" r="${rr*.55}" fill="#4d7a4e" opacity=".7"/>`});
+    b+=`<rect width="1600" height="900" fill="${g('radial','cx=".5" cy=".5" r=".75"',[[.55,'#000',0],[1,'#000',.5]])}"/>`;
+    return svg(1600,900,defs,b)};
+
+  /* ----- top-down long table (wide) ----- */
+  const spread=(_,seed=1)=>{
+    const r=rng(seed),{defs,g}=ctx();
+    let b=`<rect width="1600" height="900" fill="${g('linear','x1="0" y1="0" x2="1" y2="1"',[[0,'#dccca9'],[1,'#b9a37a']])}"/>`;
+    for(let i=0;i<30;i++)b+=`<rect x="${i*56}" width="${n(14+r()*16)}" height="900" fill="#fff" opacity="${(.03+r()*.04).toFixed(3)}"/>`;
+    b+=`<g transform="rotate(-12 200 720)"><rect x="90" y="650" width="230" height="150" rx="10" fill="#6f8a73"/><rect x="90" y="650" width="230" height="150" rx="10" fill="none" stroke="#fff" stroke-opacity=".25"/></g>`;
+    b+=`<g transform="rotate(8 1080 170)"><rect x="880" y="60" width="420" height="220" rx="24" fill="${g('linear','x1="0" y1="0" x2="1" y2="1"',[[0,'#b98b55'],[1,'#8b6034']])}"/>${[0,1,2].map(i=>`<ellipse cx="${960+i*130}" cy="170" rx="52" ry="70" fill="#e8d1a0" stroke="#7c4a1e" stroke-width="8"/>`).join('')}</g>`;
+    [[430,450,205,['#c8452a','#5b7a3a','#f0d79a']],[860,640,150,['#e0a83a','#7a2a2c','#dcd0aa']],[1170,560,215,['#6b8c3f','#d9993f','#f3e3b5']],[1440,250,150,['#a13a3a','#e9d2a8','#5b7a3a']],[700,220,140,['#f0a47a','#cfdca6','#e5591f']]].forEach(([cx,cy,R,pal])=>{
+      b+=shadow(g,cx+16,cy+22,R*1.08,R*1.05,.38);
+      b+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="${g('radial','cx=".38" cy=".34" r=".8"',[[0,'#fbf7ee'],[1,'#d5cdb8']])}"/><circle cx="${cx}" cy="${cy}" r="${R*.74}" fill="#000" opacity=".05"/>`;
+      pal.forEach((c,i)=>{const a=i*2.1+r()*.6;b+=`<circle cx="${n(cx+Math.cos(a)*R*.25)}" cy="${n(cy+Math.sin(a)*R*.25)}" r="${n(R*(.26+r()*.08))}" fill="${c}"/>`});
+      for(let i=0;i<16;i++){const a=r()*6.28,d=Math.sqrt(r())*R*.55;b+=`<circle cx="${n(cx+Math.cos(a)*d)}" cy="${n(cy+Math.sin(a)*d)}" r="${n(3+r()*5)}" fill="${pal[i%3]}" opacity=".9"/>`}});
+    [[640,470],[1350,420],[560,120],[1560,600]].forEach(([x,y])=>{b+=`<circle cx="${x}" cy="${y}" r="52" fill="#fff" opacity=".2"/><circle cx="${x}" cy="${y}" r="50" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3"/><circle cx="${x}" cy="${y}" r="30" fill="#7a2a3c" opacity=".55"/>`});
+    for(let i=0;i<4;i++)b+=`<rect x="${560+i*250}" y="${790+(i%2)*20}" width="130" height="10" rx="5" fill="#888" transform="rotate(${-8+i*4} ${625+i*250} 795)"/>`;
+    b+=`<rect width="1600" height="900" fill="${g('radial','cx=".5" cy=".5" r=".75"',[[.6,'#000',0],[1,'#000',.35]])}"/>`;
+    return svg(1600,900,defs,b)};
+
+  /* ----- still life: wine ----- */
+  const still=(_,seed=1)=>{
+    const r=rng(seed),{defs,g}=ctx();
+    let b=`<rect width="800" height="1000" fill="${g('linear','x1="0" y1="0" x2="0" y2="1"',[[0,'#22443a'],[1,'#0b1814']])}"/>`;
+    b+=`<polygon points="520,0 800,0 800,760 260,760" fill="#fff" opacity=".07"/><polygon points="600,0 800,0 800,760 430,760" fill="#fff" opacity=".07"/>`;
+    b+=`<rect y="720" width="800" height="280" fill="${g('linear','x1="0" y1="0" x2="0" y2="1"',[[0,'#4a3020'],[1,'#20130b']])}"/><rect y="716" width="800" height="8" fill="#000" opacity=".35"/>`;
+    b+=shadow(g,250,738,150,20,.55)+shadow(g,500,745,110,16,.5)+shadow(g,650,745,90,14,.5);
+    b+=`<rect x="238" y="230" width="44" height="60" fill="#b8332a"/><rect x="238" y="285" width="44" height="170" fill="${g('linear','x1="0" y1="0" x2="1" y2="0"',[[0,'#0f2a20'],[.4,'#2e5a47'],[1,'#0a1c15']])}"/><path d="M238 440C238 470 205 480 205 520V712H315V520C315 480 282 470 282 440Z" fill="${g('linear','x1="0" y1="0" x2="1" y2="0"',[[0,'#0f2a20'],[.35,'#33634e'],[1,'#0a1c15']])}"/><rect x="215" y="560" width="90" height="120" fill="#efe6d2"/><path d="M228 590H292M228 612H280M228 634H288" stroke="#3a2a1a" stroke-width="3" opacity=".6"/><rect x="228" y="470" width="8" height="220" rx="4" fill="#fff" opacity=".18"/>`;
+    [[500,1],[650,.8]].forEach(([x,s])=>{
+      const bh=200*s,by=740-90*s-bh,bw=62*s;
+      b+=`<ellipse cx="${x}" cy="740" rx="${50*s}" ry="10" fill="#fff" opacity=".3"/><rect x="${x-4}" y="${by+bh}" width="8" height="${90*s}" fill="#fff" opacity=".4"/><path d="M${x-bw} ${by}C${x-bw} ${by+bh*.8} ${x-bw*.5} ${by+bh} ${x} ${by+bh} ${x+bw*.5} ${by+bh} ${x+bw} ${by+bh*.8} ${x+bw} ${by}Z" fill="#fff" opacity=".13" stroke="#fff" stroke-opacity=".55" stroke-width="2"/><path d="M${x-bw*.94} ${by+bh*.42}H${x+bw*.94}C${x+bw*.9} ${by+bh*.85} ${x+bw*.45} ${by+bh*.98} ${x} ${by+bh*.98} ${x-bw*.45} ${by+bh*.98} ${x-bw*.9} ${by+bh*.85} ${x-bw*.94} ${by+bh*.42}Z" fill="#7a1f34" opacity=".85"/><path d="M${x-bw*.6} ${by+bh*.1}V${by+bh*.6}" stroke="#fff" stroke-width="5" opacity=".35" stroke-linecap="round"/>`});
+    b+=`<rect width="800" height="1000" fill="${g('radial','cx=".5" cy=".5" r=".75"',[[.5,'#000',0],[1,'#000',.45]])}"/>`;
+    return svg(800,1000,defs,b)};
+
+  /* ----- market produce ----- */
+  const produce=(_,seed=1)=>{
+    const r=rng(seed),{defs,g}=ctx();
+    let b=`<rect width="800" height="1000" fill="${g('linear','x1="0" y1="0" x2="1" y2="1"',[[0,'#e6dcc6'],[1,'#c6b28a']])}"/>`;
+    for(let i=0;i<24;i++)b+=`<rect y="${i*44}" width="800" height="${n(8+r()*14)}" fill="#fff" opacity="${(.03+r()*.05).toFixed(3)}"/>`;
+    const items=[];
+    for(let i=0;i<30;i++)items.push({k:Math.floor(r()*5),x:110+r()*580,y:150+r()*700,s:.75+r()*.5,a:r()*360});
+    items.sort((p,q)=>p.y-q.y).forEach(({k,x,y,s,a})=>{
+      x=n(x);y=n(y);
+      b+=`<ellipse cx="${x+10}" cy="${y+16*s+30}" rx="${62*s}" ry="${20*s}" fill="#000" opacity=".16"/>`;
+      if(k===0)b+=`<circle cx="${x}" cy="${y}" r="${n(62*s)}" fill="${g('radial','cx=".38" cy=".32" r=".8"',[[0,'#f0684a'],[1,'#9b2a18']])}"/><ellipse cx="${n(x-20*s)}" cy="${n(y-24*s)}" rx="${n(16*s)}" ry="${n(9*s)}" fill="#fff" opacity=".35" transform="rotate(-30 ${n(x-20*s)} ${n(y-24*s)})"/><path d="M${x} ${n(y-58*s)}l14 -10 -4 16 16 4 -16 8 6 16 -16 -10 -14 12 2 -16 -16 -6 18 -4z" fill="#4f7d34"/>`;
+      else if(k===1)b+=`<ellipse cx="${x}" cy="${y}" rx="${n(76*s)}" ry="${n(52*s)}" fill="${g('radial','cx=".4" cy=".35" r=".8"',[[0,'#f6de62'],[1,'#c9a51e']])}" transform="rotate(${n(a)} ${x} ${y})"/>`;
+      else if(k===2)b+=`<path d="M${x} ${n(y-50*s)}C${n(x-30)} ${n(y-110*s)} ${n(x-10)} ${n(y-150*s)} ${n(x-30)} ${n(y-180*s)}M${x} ${n(y-50*s)}C${n(x+20)} ${n(y-110*s)} ${n(x+34)} ${n(y-140*s)} ${n(x+44)} ${n(y-170*s)}" stroke="#a5293e" stroke-width="7" fill="none" stroke-linecap="round"/><ellipse cx="${n(x-30)}" cy="${n(y-186*s)}" rx="${n(28*s)}" ry="${n(14*s)}" fill="#4d7a2e" transform="rotate(-70 ${n(x-30)} ${n(y-186*s)})"/><circle cx="${x}" cy="${y}" r="${n(56*s)}" fill="${g('radial','cx=".38" cy=".32" r=".8"',[[0,'#a03a68'],[1,'#5a1c3c']])}"/>`;
+      else if(k===3)b+=`<g transform="translate(${x} ${y}) rotate(${n(a)}) scale(${n(s)})"><path d="M-70 0C-30 -50 40 -50 90 -8C40 42 -30 46 -70 0Z" fill="#7da33f"/><path d="M-70 0H85" stroke="#4d7a2e" stroke-width="4"/></g>`;
+      else b+=`<g transform="translate(${x} ${y}) rotate(${n(a)}) scale(${n(s)})"><rect x="-100" y="-16" width="200" height="32" rx="16" fill="${g('linear','x1="0" y1="0" x2="1" y2="0"',[[0,'#f2efe0'],[.55,'#e6ecc8'],[1,'#6b8c3f']])}"/></g>`});
+    b+=`<rect width="800" height="1000" fill="${g('radial','cx=".5" cy=".5" r=".75"',[[.55,'#000',0],[1,'#000',.32]])}"/>`;
+    return svg(800,1000,defs,b)};
+
+  return {plate,hearth,room,spread,still,produce};
+})();
+
+function mountMedia(el){
+  const par=document.createElement('div'); par.className='media__par';
+  const inn=document.createElement('div'); inn.className='media__in';
+  const src=el.getAttribute('data-src');
+  if(src){
+    const img=new Image(); img.alt=el.dataset.alt||''; img.decoding='async'; img.loading='lazy'; img.src=src; inn.appendChild(img);
+  }else{
+    const [type,...rest]=(el.dataset.ph||'plate').split(':');
+    let seed=1,variant; rest.forEach(p=>/^\d+$/.test(p)?seed=+p:variant=p);
+    inn.innerHTML=(ART[type]||ART.plate)(variant,seed);
+    if(el.dataset.alt){el.setAttribute('role','img');el.setAttribute('aria-label',el.dataset.alt)}
+  }
+  par.appendChild(inn); el.appendChild(par);
+}
+document.querySelectorAll('.media').forEach(mountMedia);
+
+/* ---------------------------------------------------------------
+   2. HELPERS & STATE
+   --------------------------------------------------------------- */
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>Array.from(c.querySelectorAll(s));
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)), lerp=(a,b,t)=>a+(b-a)*t;
+const easeInOut=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const root=document.documentElement, body=document.body;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+const desk=()=>innerWidth>=900;
+if(reduce) root.classList.add('reduce');
+let locked=false, menuOpen=false;
+
+/* ---------------------------------------------------------------
+   1b. LANGUAGE  (Slovenian is the default; English via the SL | EN switch)
+   --------------------------------------------------------------- */
+const I18N={"en": {"k0": "Story", "k1": "Plates", "k2": "The room", "k3": "Menu", "k4": "Visit", "k5": "Menu", "k6": "Close", "k7": "Wood-fire kitchen &amp; café", "k8": "Lighting the fire", "k9": "Our story", "k10": "Signature plates", "k11": "The menu", "k12": "Reservations", "k13": "Find us", "k14": "Vrtna ulica 12, 1000 Ljubljana", "k15": "Reserve a table", "k16": "View the menu", "k17": "A wood-fire kitchen and all-day café on the river in Ljubljana. Cooked slowly, over oak, for people who like to stay.", "k18": "<span class=\"ln\">Fire, salt</span><span class=\"ln\">&amp; the <em>season.</em></span>", "k19": "Café 08–16 · Kitchen 17:30–23:00", "k20": "<i></i>Scroll", "k21": "Est. 2016 · Vrtna ulica 12", "k22": "RESERVE A TABLE · OPEN FIRE · ", "k23": "<i>01</i>The story", "k24": "Sorrel began as six tables and a single wood oven beside the river. Ten years on, the oven has become a hearth and the tables a room, but the idea hasn’t changed: cook honestly over fire, buy from people we can call by name, and let the evening take as long as it takes.", "k25": "Market morning", "k26": "7:10 am", "k27": "We burn oak and beech from a forest forty minutes away, and we cook everything over it — from the morning’s bread to the last plate of the night. There is no gas line in the building.", "k28": "The menu is written each morning around whatever the farms, foragers and fishermen bring in. Some days that’s a single perfect leek. We think that’s enough.", "k29": "Years on<br>the river", "k30": "Hearth,<br>no gas", "k31": "To our<br>furthest farm", "k32": "See the room", "k33": "<i>02</i>Signature plates", "k34": "Plates we <em>keep</em><br>coming back to", "k35": "Keep scrolling", "k36": "Embered <em>leeks</em>", "k37": "Hazelnut romesco, aged sherry, sorrel oil.", "k38": "Charred <em>sourdough</em>", "k39": "Baked in the embers, cultured butter, flaky salt.", "k40": "Beech-smoked <em>trout</em>", "k41": "Sorrel cream, pickled shallot, trout roe.", "k42": "Dry-aged <em>duck</em>", "k43": "Fig-leaf jus, roasted figs, wild kale.", "k44": "Ash-baked <em>celeriac</em>", "k45": "Brown butter, toasted walnut, black garlic.", "k46": "Burnt honey <em>cheesecake</em>", "k47": "Baked at the mouth of the fire, sea salt, quince.", "k48": "<i>03</i>The long table", "k49": "Made to be <em>shared,</em> and lingered over.", "k50": "Sunday long table · family-style", "k51": "8 – 24 guests", "k52": "Oak", "k53": "Salt", "k54": "Smoke", "k55": "Honey", "k56": "Sorrel", "k57": "Ash", "k58": "Fig", "k59": "Seasonal", "k60": "Local", "k61": "Slow", "k62": "Open fire", "k63": "<i>04</i>The room", "k64": "A room that <em>holds</em> the evening.", "k65": "Low light, warm stone, the hearth glowing at the far end. By day it’s a bright café with a long communal table; by night, candles and a quiet crowd. Come for coffee, stay for dinner — nobody’s counting.", "k66": "The hearth room", "k67": "Evening", "k68": "Morning counter", "k69": "Café", "k70": "The fire", "k71": "Always lit", "k72": "Corner table", "k73": "Dinner", "k74": "Cellar", "k75": "Natural wine", "k76": "The bar", "k77": "Late", "k78": "<i>05</i>The menu", "k79": "Written each <em>morning.</em>", "k80": "Short, seasonal and cooked over fire. Prices in euro. We’re happy to adapt for allergies and dietary needs — just tell us when you book.", "k81": "Morning <small>08–16</small>", "k82": "Kitchen <small>17:30</small>", "k83": "Sweet", "k84": "Glass", "k85": "Café &amp; breakfast", "k86": "Tue – Sun", "k87": "Tue – Sat", "k88": "Dinner from the fire", "k89": "Something sweet", "k90": "All day", "k91": "Wine, cocktails &amp; zero-proof", "k92": "From 11:00", "k93": "Sourdough, cultured butter &amp; jam", "k94": "Baked in the embers each morning. Jam of the week.", "k95": "Soft egg, ember leeks, chive <span class=\"mi__tag\">V</span>", "k96": "On grilled toast with brown-butter hollandaise.", "k97": "Ricotta hotcakes, roast plum <span class=\"mi__tag\">V</span>", "k98": "Local honey, toasted hazelnuts.", "k99": "Smoked tomato shakshuka <span class=\"mi__tag\">V</span> <span class=\"mi__tag\">GF</span>", "k100": "Two eggs, sheep’s feta, charred flatbread.", "k101": "Croissant, plain or almond", "k102": "From the pastry counter, baked at six.", "k103": "Flat white · Cortado · Filter", "k104": "Single-origin, roasted in the region. Oat milk on request.", "k105": "Embered leeks, hazelnut romesco <span class=\"mi__tag\">VG</span>", "k106": "Aged sherry, sorrel oil.", "k107": "Beetroot tartare, horseradish snow <span class=\"mi__tag\">V</span>", "k108": "Rye crisps, cultured cream.", "k109": "Beech-smoked trout, sorrel cream", "k110": "Pickled shallot, trout roe, dill.", "k111": "Ash-baked celeriac <span class=\"mi__tag\">V</span> <span class=\"mi__tag\">GF</span>", "k112": "Dry-aged duck, fig-leaf jus <span class=\"mi__tag\">GF</span>", "k113": "Roasted figs, wild kale.", "k114": "Slow lamb shoulder, for two", "k115": "Sundays only. Order when you book.", "k116": "Burnt honey cheesecake <span class=\"mi__tag\">V</span>", "k117": "Ash-baked pear <span class=\"mi__tag\">V</span>", "k118": "Brown-butter ice cream, toasted oats.", "k119": "Dark chocolate, olive oil, salt <span class=\"mi__tag\">VG</span> <span class=\"mi__tag\">GF</span>", "k120": "Served warm, with a spoon of cold cream on request.", "k121": "Affogato, hazelnut <span class=\"mi__tag\">V</span>", "k122": "Hazelnut gelato, a double shot.", "k123": "Local cheeses &amp; quince", "k124": "Three cheeses from small dairies, sourdough crackers.", "k125": "House sorrel liqueur, sparkling wine, soda, lemon.", "k126": "Smoked negroni", "k127": "Beech-smoked, orange oil, one large cube.", "k128": "Natural wine by the glass", "k129": "from €7", "k130": "Small growers from Vipava, Brda and beyond. Ask what’s open.", "k131": "Kombucha of the week <span class=\"mi__tag\">VG</span>", "k132": "Brewed in the cellar downstairs.", "k133": "Pink grapefruit shrub <span class=\"mi__tag\">0%</span>", "k134": "Tart, fizzy, herbal. Very good with smoke.", "k135": "V vegetarian", "k136": "VG vegan", "k137": "GF gluten-free", "k138": "<i>06</i>Reservations", "k139": "Save a seat <em>by the fire.</em>", "k140": "Dinner tables are released thirty days ahead. The café is always walk-in. For parties over eight, or to hire the hearth room, please call us.", "k141": "Call the kitchen", "k142": "Date", "k143": "Guests", "k144": "Time", "k145": "Name", "k146": "Email or phone", "k147": "Anything we should know? <span style=\"opacity:.6;text-transform:none;letter-spacing:0\">(optional)</span>", "k148": "Please choose a date.", "k149": "We’ll need a name for the table.", "k150": "Please enter a valid email or phone number.", "k151": "Requests are confirmed within the hour, during opening hours.", "k152": "Request table", "k153": "See you <em>soon.</em>", "k154": "Thank you — your request is in. We’ll reply to confirm your table shortly.", "k155": "Make another request", "k156": "<i>07</i>Find us", "k157": "On the river, <em>just off</em> the old town.", "k158": "Address", "k159": "Contact", "k160": "Vrtna ulica 12<br>1000 Ljubljana<br>Slovenia", "k161": "Monday", "k162": "Tuesday – Thursday", "k163": "Friday – Saturday", "k164": "Sunday", "k165": "Closed", "k166": "Café until 16:00 · Kitchen from 17:30 · Sunday is long lunch.", "k167": "the river", "k168": "Get directions", "k169": "4 min walk from the main bridge", "k170": "Bike racks out front", "k171": "Step-free entrance", "k172": "Letters from the <em>kitchen.</em>", "k173": "Email address", "k174": "Explore", "k175": "Follow", "k176": "Hours &amp; map", "k177": "Journal", "k178": "© 2026 Sorrel Kitchen &amp; Café. Cooked over fire, made with patience.", "k179": "Back to top", "k180": "Skip to content", "k181": "Sorrel — back to top", "k182": "Primary", "k183": "Site menu", "k184": "Menu sections", "k185": "Fewer guests", "k186": "More guests", "k187": "Subscribe", "k188": "Opening hours", "k189": "Instagram (placeholder link)", "k190": "Map showing Sorrel beside the river, just off the old town", "k191": "Welcome", "k192": "The long table", "k193": "Your name", "k194": "you@example.com", "k195": "Allergies, celebrations, high chair…", "k196": "Your email", "k197": "Flames in a stone hearth", "k198": "Charred leeks with romesco", "k199": "Market vegetables on linen", "k200": "The café in morning light", "k201": "Embered leeks with hazelnut romesco", "k202": "Charred sourdough with cultured butter", "k203": "Smoked trout with sorrel cream", "k204": "Dry-aged duck with figs", "k205": "Ash-baked celeriac", "k206": "Burnt honey cheesecake", "k207": "A long table of shared dishes seen from above", "k208": "The dining room at dusk", "k209": "Flat white and a croissant", "k210": "The wood fire", "k211": "Warm interior with amber light", "k212": "Wine bottle and glasses in window light", "k213": "The bar at night", "k214": "Reserve"}, "sl": {"k0": "Zgodba", "k1": "Jedi", "k2": "Prostor", "k3": "Jedilnik", "k4": "Obisk", "k5": "Meni", "k6": "Zapri", "k7": "Kuhinja na ognju in kavarna", "k8": "Netimo ogenj", "k9": "Naša zgodba", "k10": "Značilne jedi", "k11": "Jedilnik", "k12": "Rezervacije", "k13": "Kje smo", "k14": "Vrtna ulica 12, 1000 Ljubljana", "k15": "Rezerviraj mizo", "k16": "Poglej jedilnik", "k17": "Kuhinja na ognju in celodnevna kavarna ob reki v Ljubljani. Počasi kuhamo na hrastovem žaru – za ljudi, ki radi posedijo.", "k18": "<span class=\"ln\">Ogenj, sol</span><span class=\"ln\">&amp; <em>sezona.</em></span>", "k19": "Kavarna 08–16 · Kuhinja 17:30–23:00", "k20": "<i></i>Drsi", "k21": "Od 2016 · Vrtna ulica 12", "k22": "REZERVIRAJ MIZO · PRI OGNJU · ", "k23": "<i>01</i>Zgodba", "k24": "Sorrel se je začel s šestimi mizami in eno samo pečjo na drva ob reki. Deset let pozneje je iz peči zraslo ognjišče, iz miz pa cel prostor, ideja pa je ostala enaka: pošteno kuhati na ognju, nabavljati pri ljudeh, ki jih poznamo po imenu, in večeru pustiti, da traja, kolikor pač traja.", "k25": "Jutro na tržnici", "k26": "7:10", "k27": "Kurimo s hrastom in bukvijo iz gozda, ki je oddaljen štirideset minut, in nad njima skuhamo vse – od jutranjega kruha do zadnjega krožnika ob koncu večera. V stavbi nimamo plinskega priključka.", "k28": "Jedilnik vsako jutro sestavimo iz tistega, kar prinesejo kmetije, nabiralci in ribiči. Nekateri dnevi so dovolj že za en sam popoln por. Nam zadostuje.", "k29": "Let ob<br>reki", "k30": "Ognjišče,<br>brez plina", "k31": "Do najbolj<br>oddaljene kmetije", "k32": "Oglejte si prostor", "k33": "<i>02</i>Značilne jedi", "k34": "Jedi, ki se jim <em>vedno</em><br>znova vračamo", "k35": "Drsite naprej", "k36": "Žerjavični <em>por</em>", "k37": "Lešnikov romesco, staran šeri, olje iz kislice.", "k38": "Ožgan <em>kvasni kruh</em>", "k39": "Pečen v žerjavici, domače maslo, kosmiči soli.", "k40": "Prekajena <em>postrv</em>", "k41": "V bukovem dimu, smetana s kislico, vložena šalotka, postrvja ikra.", "k42": "Zorjena <em>raca</em>", "k43": "Omaka iz smokvinih listov, pečene smokve, divji ohrovt.", "k44": "Zelena iz <em>pepela</em>", "k45": "Rjavo maslo, praženi orehi, črni česen.", "k46": "Torta z <em>žganim medom</em>", "k47": "Pečena ob ustju ognja, morska sol, kutina.", "k48": "<i>03</i>Dolga miza", "k49": "Ustvarjeno za <em>deljenje</em> in dolge večere.", "k50": "Nedeljska dolga miza · družinski način", "k51": "8 – 24 gostov", "k52": "Hrast", "k53": "Sol", "k54": "Dim", "k55": "Med", "k56": "Kislica", "k57": "Pepel", "k58": "Figa", "k59": "Sezonsko", "k60": "Lokalno", "k61": "Počasi", "k62": "Odprt ogenj", "k63": "<i>04</i>Prostor", "k64": "Prostor, ki večer <em>objame.</em>", "k65": "Mehka svetloba, topel kamen, na koncu prostora žareče ognjišče. Podnevi svetla kavarna z dolgo skupno mizo, zvečer sveče in tiho vzdušje. Pridite na kavo, ostanite na večerjo – nihče ne šteje minut.", "k66": "Ognjiščna soba", "k67": "Večer", "k68": "Jutranji pult", "k69": "Kavarna", "k70": "Ogenj", "k71": "Vedno zakurjen", "k72": "Miza v kotu", "k73": "Večerja", "k74": "Klet", "k75": "Naravna vina", "k76": "Bar", "k77": "Pozno", "k78": "<i>05</i>Jedilnik", "k79": "Napisan vsako <em>jutro.</em>", "k80": "Kratek, sezonski in kuhan na ognju. Cene so v evrih. Z veseljem prilagodimo jedi alergijam in prehranskim željam – samo povejte ob rezervaciji.", "k81": "Jutro <small>08–16</small>", "k82": "Kuhinja <small>17:30</small>", "k83": "Sladko", "k84": "Kozarec", "k85": "Kavarna in zajtrk", "k86": "Tor – ned", "k87": "Tor – sob", "k88": "Večerja z ognja", "k89": "Nekaj sladkega", "k90": "Ves dan", "k91": "Vino, koktajli in brezalkoholno", "k92": "Od 11:00", "k93": "Kvasni kruh, maslo in marmelada", "k94": "Vsako jutro pečen v žerjavici. Marmelada tedna.", "k95": "Mehko kuhano jajce, por z žerjavice, drobnjak <span class=\"mi__tag\">V</span>", "k96": "Na popečenem kruhu, s holandsko omako iz rjavega masla.", "k97": "Ricotta palačinke s pečeno slivo <span class=\"mi__tag\">V</span>", "k98": "Domači med, praženi lešniki.", "k99": "Šakšuka z dimljenim paradižnikom <span class=\"mi__tag\">V</span> <span class=\"mi__tag\">BG</span>", "k100": "Dve jajci, ovčji feta sir, ožgan ploščat kruh.", "k101": "Croissant, navaden ali z mandlji", "k102": "S pekovskega pulta, pečen ob šestih.", "k103": "Flat white · Cortado · Filtrirana kava", "k104": "Kava enega porekla, pražena v regiji. Ovseno mleko na željo.", "k105": "Por z žerjavice, lešnikov romesco <span class=\"mi__tag\">VG</span>", "k106": "Staran šeri, olje iz kislice.", "k107": "Tartar iz rdeče pese, hrenov sneg <span class=\"mi__tag\">V</span>", "k108": "Ržen čips, kisla smetana.", "k109": "V bukovem dimu prekajena postrv, smetana s kislico", "k110": "Vložena šalotka, postrvja ikra, koper.", "k111": "Zelena, pečena v pepelu <span class=\"mi__tag\">V</span> <span class=\"mi__tag\">BG</span>", "k112": "Zorjena račja prsa, omaka iz smokvinih listov <span class=\"mi__tag\">BG</span>", "k113": "Pečene smokve, divji ohrovt.", "k114": "Počasi pečena jagnječja plečka, za dva", "k115": "Samo ob nedeljah. Naročite ob rezervaciji.", "k116": "Sirova torta z žganim medom <span class=\"mi__tag\">V</span>", "k117": "V pepelu pečena hruška <span class=\"mi__tag\">V</span>", "k118": "Sladoled iz rjavega masla, praženi ovseni kosmiči.", "k119": "Temna čokolada, oljčno olje, sol <span class=\"mi__tag\">VG</span> <span class=\"mi__tag\">BG</span>", "k120": "Postrežena topla, na željo z žlico hladne smetane.", "k121": "Affogato z lešniki <span class=\"mi__tag\">V</span>", "k122": "Lešnikov gelato, dvojni espresso.", "k123": "Lokalni siri s kutino", "k124": "Trije siri malih sirarn, kvasni krekerji.", "k125": "Hišni liker iz kislice, peneče vino, soda, limona.", "k126": "Dimljeni negroni", "k127": "Prekajen z bukovino, pomarančno olje, ena velika kocka ledu.", "k128": "Naravno vino na kozarec", "k129": "od €7", "k130": "Mali vinarji iz Vipavske, Brd in širše. Vprašajte, kaj je odprto.", "k131": "Kombuča tedna <span class=\"mi__tag\">VG</span>", "k132": "Varjena v kleti pod nami.", "k133": "Shrub iz rožnate grenivke <span class=\"mi__tag\">0%</span>", "k134": "Kisel, penast, zeliščen. Odlično se ujame z dimom.", "k135": "V vegetarijansko", "k136": "VG vegansko", "k137": "BG brez glutena", "k138": "<i>06</i>Rezervacije", "k139": "Rezervirajte mesto <em>ob ognju.</em>", "k140": "Mize za večerjo odpiramo trideset dni vnaprej. V kavarno lahko vstopite kadarkoli. Za skupine nad osem oseb ali najem ognjiščne sobe nas prosimo pokličite.", "k141": "Pokličite kuhinjo", "k142": "Datum", "k143": "Gostje", "k144": "Ura", "k145": "Ime", "k146": "E-pošta ali telefon", "k147": "Ali moramo kaj vedeti? <span style=\"opacity:.6;text-transform:none;letter-spacing:0\">(neobvezno)</span>", "k148": "Izberite datum.", "k149": "Za rezervacijo potrebujemo ime.", "k150": "Vnesite veljaven e-naslov ali telefonsko številko.", "k151": "Rezervacije potrdimo v eni uri, v obratovalnem času.", "k152": "Rezerviraj mizo", "k153": "Se vidimo <em>kmalu.</em>", "k154": "Hvala – vaše povpraševanje smo prejeli. Kmalu se vam oglasimo s potrditvijo mize.", "k155": "Nova rezervacija", "k156": "<i>07</i>Kje smo", "k157": "Ob reki, <em>nekaj korakov</em> od starega mesta.", "k158": "Naslov", "k159": "Kontakt", "k160": "Vrtna ulica 12<br>1000 Ljubljana<br>Slovenija", "k161": "Ponedeljek", "k162": "Torek – četrtek", "k163": "Petek – sobota", "k164": "Nedelja", "k165": "Zaprto", "k166": "Kavarna do 16:00 · Kuhinja od 17:30 · Nedelja je dolgo kosilo.", "k167": "reka", "k168": "Navodila za pot", "k169": "4 minute hoje od glavnega mostu", "k170": "Stojala za kolesa pred vhodom", "k171": "Vhod brez stopnic", "k172": "Pisma iz <em>kuhinje.</em>", "k173": "E-naslov", "k174": "Razišči", "k175": "Sledite", "k176": "Ure in zemljevid", "k177": "Dnevnik", "k178": "© 2026 Sorrel kuhinja in kavarna. Kuhano na ognju, narejeno s potrpežljivostjo.", "k179": "Nazaj na vrh", "k180": "Preskoči na vsebino", "k181": "Sorrel – na vrh strani", "k182": "Glavna navigacija", "k183": "Meni spletne strani", "k184": "Razdelki jedilnika", "k185": "Manj gostov", "k186": "Več gostov", "k187": "Naročite se", "k188": "Delovni čas", "k189": "Instagram (začasna povezava)", "k190": "Zemljevid z lokalom Sorrel ob reki, nekaj korakov od starega mesta", "k191": "Dobrodošli", "k192": "Dolga miza", "k193": "Vaše ime", "k194": "ime@primer.si", "k195": "Alergije, praznovanja, otroški stolček …", "k196": "Vaš e-naslov", "k197": "Plameni v kamnitem ognjišču", "k198": "Por z žerjavice z romescom", "k199": "Tržnična zelenjava na lanenem prtu", "k200": "Kavarna v jutranji svetlobi", "k201": "Žerjavični por z lešnikovim romescom", "k202": "Ožgan kvasni kruh z maslom", "k203": "Prekajena postrv s smetano s kislico", "k204": "Zorjena raca s smokvami", "k205": "Zelena, pečena v pepelu", "k206": "Sirova torta z žganim medom", "k207": "Dolga miza z jedmi za deljenje, pogled od zgoraj", "k208": "Jedilnica v mraku", "k209": "Flat white in croissant", "k210": "Ogenj na drva", "k211": "Topel prostor z jantarno svetlobo", "k212": "Steklenica vina in kozarca v svetlobi okna", "k213": "Bar ponoči", "k214": "Rezerviraj"}};
+Object.assign(I18N.en,{"title": "Sorrel — Wood-fire Kitchen & Café, Ljubljana", "desc": "Sorrel is a wood-fire kitchen and all-day café on the river in Ljubljana. Seasonal plates cooked over oak, natural wine, and long evenings.", "burger_open": "Open menu", "burger_close": "Close menu", "e_date": "Please choose a date.", "e_mon": "We’re closed on Mondays — please pick another day.", "e_past": "Please choose a date from today onwards.", "e_over8": "For parties over 8, please call us on +386 1 000 00 00.", "news_ok": "Thank you — see you in your inbox.", "news_err": "Please enter a valid email.", "st_open": "Open now · until {t}", "st_today": "Closed · opens today at {t}", "st_tom": "Closed · opens tomorrow at {t}", "st_day": "Closed · opens {d} at {t}", "g1": "{n} guest", "g2": "{n} guests", "g3": "{n} guests", "g5": "{n} guests"});
+Object.assign(I18N.sl,{"title": "Sorrel — kuhinja na ognju in kavarna, Ljubljana", "desc": "Sorrel je kuhinja na ognju in celodnevna kavarna ob reki v Ljubljani. Sezonske jedi, pripravljene na hrastovem žaru, naravna vina in dolgi večeri.", "burger_open": "Odpri meni", "burger_close": "Zapri meni", "e_date": "Izberite datum.", "e_mon": "V ponedeljek smo zaprti – izberite drug dan.", "e_past": "Izberite datum od danes naprej.", "e_over8": "Za skupine nad 8 oseb nas prosimo pokličite na +386 1 000 00 00.", "news_ok": "Hvala – se beremo v vašem nabiralniku.", "news_err": "Vnesite veljaven e-naslov.", "st_open": "Odprto zdaj · do {t}", "st_today": "Zaprto · odpre danes ob {t}", "st_tom": "Zaprto · odpre jutri ob {t}", "st_day": "Zaprto · odpre {d} ob {t}", "g1": "{n} gost", "g2": "{n} gosta", "g3": "{n} gostje", "g5": "{n} gostov"});
+const DAYS={"en": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "sl": ["v nedeljo", "v ponedeljek", "v torek", "v sredo", "v četrtek", "v petek", "v soboto"]};
+let lang='sl';
+const T=k=>(I18N[lang]&&I18N[lang][k])||I18N.en[k]||k;
+
+/* per-element delay from data-d="ms" */
+$$('[data-d]').forEach(el=>el.style.setProperty('--d',el.dataset.d));
+
+/* ---------------------------------------------------------------
+   3. TEXT SPLITTING  (word masks + scroll-lit words)
+   --------------------------------------------------------------- */
+function split(el,mode){
+  let i=0;
+  (function walk(node){
+    Array.from(node.childNodes).forEach(ch=>{
+      if(ch.nodeType===3){
+        const frag=document.createDocumentFragment();
+        ch.textContent.split(/(\s+)/).forEach(tok=>{
+          if(!tok)return;
+          if(/^\s+$/.test(tok)){frag.appendChild(document.createTextNode(' '));return}
+          if(mode==='scrub'){const s=document.createElement('span');s.className='sw';s.textContent=tok;frag.appendChild(s);i++}
+          else{const w=document.createElement('span');w.className='w';const s=document.createElement('span');s.textContent=tok;s.style.setProperty('--wi',i++);w.appendChild(s);frag.appendChild(w)}
+        });
+        node.replaceChild(frag,ch);
+      }else if(ch.nodeType===1&&ch.tagName!=='BR')walk(ch);
+    });
+  })(el);
+  return i;
+}
+$$('[data-words]').forEach(el=>split(el));
+const feastTitle=$('[data-feast]'); split(feastTitle);
+const scrubEl=$('[data-scrub]'); split(scrubEl,'scrub');
+let scrubWords=$$('.sw',scrubEl);
+
+/* ---------------------------------------------------------------
+   4. SMOOTH SCROLL  (lerped wheel scrolling, desktop pointer only)
+   --------------------------------------------------------------- */
+let sTarget=scrollY, sCur=scrollY, sRun=false, sLast=0;
+const smooth=fine&&!reduce;
+const maxScroll=()=>root.scrollHeight-innerHeight;
+function sStep(t){
+  const dt=Math.min(.05,(t-sLast)/1000||.016); sLast=t;
+  sCur+=(sTarget-sCur)*(1-Math.exp(-dt*7.5));
+  if(Math.abs(sTarget-sCur)<.4){sCur=sTarget;scrollTo(0,sCur);sRun=false;return}
+  scrollTo(0,sCur); requestAnimationFrame(sStep);
+}
+function sKick(){if(!sRun){sRun=true;sCur=scrollY;sLast=performance.now();requestAnimationFrame(sStep)}}
+if(smooth){
+  addEventListener('wheel',e=>{
+    if(locked||e.ctrlKey||e.defaultPrevented||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+    for(let el=e.target;el&&el!==body&&el.nodeType===1;el=el.parentElement){
+      const oy=getComputedStyle(el).overflowY;
+      if((oy==='auto'||oy==='scroll')&&el.scrollHeight>el.clientHeight+1)return;
+    }
+    e.preventDefault();
+    let d=e.deltaY; if(e.deltaMode===1)d*=34; else if(e.deltaMode===2)d*=innerHeight;
+    if(!sRun)sTarget=scrollY;
+    sTarget=clamp(sTarget+d,0,maxScroll()); sKick();
+  },{passive:false});
+  addEventListener('scroll',()=>{if(!sRun){sTarget=sCur=scrollY}},{passive:true});
+}
+function goTo(y){
+  y=clamp(y,0,maxScroll());
+  if(smooth){sTarget=y;sKick()}else scrollTo({top:y,behavior:reduce?'auto':'smooth'});
+}
+
+/* ---------------------------------------------------------------
+   5. LOADER  →  hero entrance
+   --------------------------------------------------------------- */
+const loader=$('.loader'), cnt=$('.loader__count'), bar=$('.loader__bar i');
+function startSite(){
+  if(body.classList.contains('is-loaded'))return;
+  body.classList.add('is-loaded'); root.classList.remove('is-loading');
+  setTimeout(()=>{
+    $$('.hero [data-reveal],.hero [data-words],.hero .media,#heroArch,.nav').forEach(el=>el.classList.add('is-in'));
+  },reduce?0:420);
+  setTimeout(()=>{loader&&loader.remove();layoutAll();frame()},1700);
+}
+(function runLoader(){
+  const min=reduce?250:1950, t0=performance.now(); let ready=false;
+  Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,2400))]).then(()=>ready=true);
+  setTimeout(startSite,6000);                       // safety net
+  (function tick(now){
+    const t=clamp((now-t0)/min,0,1), p=ready?easeInOut(t):Math.min(easeInOut(t),.9);
+    cnt.textContent=String(Math.round(p*100)).padStart(3,'0'); bar.style.transform=`scaleX(${p})`;
+    if(t>=1&&ready){startSite();return}
+    requestAnimationFrame(tick);
+  })(t0);
+})();
+
+/* ---------------------------------------------------------------
+   6. REVEALS  (IntersectionObserver)
+   --------------------------------------------------------------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target; el.classList.add('is-in'); io.unobserve(el);
+  if(el.hasAttribute('data-count'))countUp(el);
+}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+$$('[data-reveal],[data-words],[data-count],[data-section-reveal]').forEach(el=>{
+  if(el.closest('.hero')||el.closest('.mo')||el.closest('.nav'))return;
+  io.observe(el);
+});
+/* images are observed through their frame (an element clipped by its own clip-path reports no intersection) */
+const mediaIO=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  $$(':scope>.media:not([data-noreveal])',e.target).forEach(m=>m.classList.add('is-in'));
+  mediaIO.unobserve(e.target);
+}),{threshold:.1,rootMargin:'0px 0px -6% 0px'});
+$$('.media:not([data-noreveal])').forEach(m=>{
+  if(m.closest('.hero')||m.closest('.mo'))return;
+  mediaIO.observe(m.parentElement);
+});
+function countUp(el){
+  const end=+el.dataset.count,t0=performance.now(),dur=reduce?1:1700;
+  (function s(now){const t=clamp((now-t0)/dur,0,1);el.textContent=Math.round(end*(1-Math.pow(1-t,4)));if(t<1)requestAnimationFrame(s)})(t0);
+}
+$$('[data-count]').forEach(el=>{el.textContent='0'});
+
+/* ---------------------------------------------------------------
+   7. NAVIGATION + FULL-SCREEN MENU
+   --------------------------------------------------------------- */
+const nav=$('#nav'), burger=$('#burger'), overlay=$('#menu-overlay');
+const moLinks=$$('.mo__list a'), moMedia=$$('.mo__stage .media');
+function setPreview(i){moMedia.forEach((m,k)=>m.classList.toggle('is-active',k===i))}
+moLinks.forEach(a=>{a.addEventListener('mouseenter',()=>setPreview(+a.dataset.p));a.addEventListener('focus',()=>setPreview(+a.dataset.p))});
+function setMenu(open){
+  menuOpen=open; locked=open;
+  body.classList.toggle('menu-open',open); root.classList.toggle('is-locked',open);
+  burger.setAttribute('aria-expanded',open); burger.setAttribute('aria-label',T(open?'burger_close':'burger_open'));
+  overlay.setAttribute('aria-hidden',!open);
+  if(open){nav.classList.remove('is-hidden');setTimeout(()=>menuOpen&&moLinks[0].focus({preventScroll:true}),750)}
+}
+burger.addEventListener('click',()=>setMenu(!menuOpen));
+addEventListener('keydown',e=>{
+  if(!menuOpen)return;
+  if(e.key==='Escape'){setMenu(false);burger.focus()}
+  if(e.key==='Tab'){
+    const f=[burger,...moLinks,$('.mo__info .btn')]; const i=f.indexOf(document.activeElement);
+    if(e.shiftKey&&(i<=0)){e.preventDefault();f[f.length-1].focus()}
+    else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}
+  }
+});
+
+/* every in-page link scrolls smoothly, landing just below each section’s curved edge */
+$$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const h=a.getAttribute('href'); if(h==='#')return e.preventDefault();
+  const id=h.slice(1), el=id==='top'?null:document.getElementById(id);
+  if(id!=='top'&&!el)return;
+  e.preventDefault();
+  const go=()=>{if(!el)return goTo(0);const r=parseFloat(getComputedStyle(el).borderTopLeftRadius)||0;goTo(el.getBoundingClientRect().top+scrollY+r)};
+  if(menuOpen){setMenu(false);setTimeout(go,250)}else go();
+}));
+
+/* ---------------------------------------------------------------
+   8. CUSTOM CURSOR + MAGNETIC BUTTONS  (fine pointers only)
+   --------------------------------------------------------------- */
+if(fine&&!reduce){
+  const c=$('.cursor'), lab=$('span',c); let tx=-100,ty=-100,x=-100,y=-100,run=false;
+  const loop=()=>{x=lerp(x,tx,.2);y=lerp(y,ty,.2);c.style.transform=`translate3d(${x}px,${y}px,0)`;if(Math.abs(tx-x)+Math.abs(ty-y)>.3)requestAnimationFrame(loop);else run=false};
+  addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;c.classList.add('is-on');if(!run){run=true;requestAnimationFrame(loop)}},{passive:true});
+  document.addEventListener('mouseleave',()=>c.classList.remove('is-on'));
+  document.addEventListener('mouseover',e=>{
+    const d=e.target.closest('[data-cursor]');
+    if(d){lab.textContent=d.dataset.cursor;c.classList.add('is-label');c.classList.remove('is-link')}
+    else{c.classList.remove('is-label');c.classList.toggle('is-link',!!e.target.closest('a,button,input,select,textarea,label'))}
+  });
+  $$('[data-magnetic]').forEach(el=>{
+    el.addEventListener('mouseenter',()=>el.classList.add('is-magnet'));
+    el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.transform=`translate3d(${(e.clientX-r.left-r.width/2)*.22}px,${(e.clientY-r.top-r.height/2)*.3}px,0)`});
+    el.addEventListener('mouseleave',()=>{el.classList.remove('is-magnet');el.style.transform=''});
+  });
+  /* hero mouse parallax */
+  const hero=$('.hero'); let mx=0,my=0,cx=0,cy=0,hr=false;
+  const hl=()=>{cx=lerp(cx,mx,.06);cy=lerp(cy,my,.06);hero.style.setProperty('--mx',cx.toFixed(4));hero.style.setProperty('--my',cy.toFixed(4));if(Math.abs(cx-mx)+Math.abs(cy-my)>.0005)requestAnimationFrame(hl);else hr=false};
+  hero.addEventListener('mousemove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;if(!hr){hr=true;requestAnimationFrame(hl)}},{passive:true});
+}
+
+/* ---------------------------------------------------------------
+   9. SCROLL-DRIVEN SCENES
+   --------------------------------------------------------------- */
+const progressBar=$('.progress'), heroEl=$('.hero'), heroArch=$('#heroArch'), heroCopy=$('#heroCopy'), badge=$('.hero__badge svg.txt');
+const parItems=$$('.media[data-par]').map(m=>({m,par:$('.media__par',m),k:parseFloat(m.dataset.par)||.08}));
+const drift=$$('[data-drift]').map(el=>({el,v:parseFloat(el.dataset.drift)||0,ref:el.closest('[data-drift-ref]')||el.parentElement}));
+const navSecs=$$('main [data-nav]');
+const dishesSec=$('#dishes'), dTrack=$('#dishTrack'), dBar=$('#dishBar'), dIdx=$('#dishIdx'), dCards=$$('.dish');
+const feast=$('#feast'), feastFrame=$('#feastFrame');
+const ribbon=$('.ribbon'), ribbonRows=$$('[data-ribbon]');
+const footer=$('#footer');
+let dOn=false, dDist=0, revealFooter=false, lastY=scrollY, ticking=false;
+
+function layoutDishes(){
+  dOn=desk()&&!reduce;
+  dishesSec.classList.toggle('dishes--pinned',dOn);
+  if(!dOn){dishesSec.style.height='';dTrack.style.transform='';dDist=0;return}
+  dDist=Math.max(0,dTrack.offsetWidth-innerWidth);
+  dishesSec.style.height=(dDist+innerHeight)+'px';
+}
+function layoutFooter(){
+  const h=footer.offsetHeight;
+  revealFooter=desk()&&h<=innerHeight;
+  root.style.setProperty('--footer-h',h+'px');
+  body.classList.toggle('has-reveal',revealFooter);
+}
+function layoutAll(){layoutDishes();layoutFooter();moveInd()}
+
+function frame(){
+  ticking=false;
+  const y=scrollY, vh=innerHeight, vw=innerWidth, docH=root.scrollHeight, dy=y-lastY, big=desk();
+
+  /* progress bar */
+  progressBar.style.transform=`scaleX(${docH>vh?clamp(y/(docH-vh),0,1):0})`;
+
+  /* nav: hide on scroll-down, return on scroll-up, adapt colours to section */
+  if(!menuOpen){
+    if(y>vh*.6&&dy>5)nav.classList.add('is-hidden'); else if(dy<-5||y<vh*.6)nav.classList.remove('is-hidden');
+    nav.classList.toggle('is-stuck',y>70);
+  }
+  let theme='dark';
+  for(const s of navSecs){const r=s.getBoundingClientRect();if(r.top<=44&&r.bottom>44){theme=s.dataset.nav;break}}
+  nav.classList.toggle('is-light',theme==='light');
+  lastY=y;
+
+  /* hero — content drifts away as the story card rises over it */
+  if(y<vh*1.2&&!reduce){
+    const p=clamp(y/vh,0,1);
+    heroArch.style.transform=`translate3d(0,${y*.14}px,0) scale(${1+p*.05})`;
+    heroCopy.style.transform=`translate3d(0,${y*-.08}px,0)`;
+    heroCopy.style.opacity=String(1-p*1.15);
+  }
+  if(badge)badge.style.transform=`rotate(${y*.16}deg)`;
+
+  /* image parallax */
+  if(!reduce&&big){
+    for(const it of parItems){
+      const r=it.m.getBoundingClientRect(); if(r.bottom<-120||r.top>vh+120)continue;
+      const p=(r.top+r.height/2-vh/2)/(vh/2+r.height/2);
+      it.par.style.transform=`translate3d(0,${(-p*it.k*r.height).toFixed(1)}px,0)`;
+    }
+    for(const d of drift){
+      const r=d.ref.getBoundingClientRect(); if(r.bottom<-200||r.top>vh+200)continue;
+      const p=(r.top+r.height/2-vh/2)/(vh/2+r.height/2);
+      d.el.style.transform=`translate3d(0,${(p*d.v).toFixed(1)}px,0)`;
+    }
+  }
+
+  /* story: words light up as you read */
+  if(scrubEl){
+    const r=scrubEl.getBoundingClientRect();
+    if(r.bottom>-50&&r.top<vh){
+      const p=clamp((vh*.86-r.top)/(r.height+vh*.42),0,1), n=scrubWords.length, k=p*(n+4);
+      for(let i=0;i<n;i++)scrubWords[i].style.opacity=(.16+.84*clamp((k-i)/4,0,1)).toFixed(2);
+    }
+  }
+
+  /* dishes: pinned horizontal travel */
+  if(dOn){
+    const r=dishesSec.getBoundingClientRect(), p=clamp(-r.top/(r.height-vh||1),0,1);
+    dTrack.style.transform=`translate3d(${(-p*dDist).toFixed(1)}px,0,0)`;
+    dBar.style.transform=`scaleX(${p})`;
+    dIdx.textContent=String(clamp(Math.round(p*(dCards.length-1))+1,1,dCards.length)).padStart(2,'0');
+  }
+
+  /* feast: photograph expands to fill the screen */
+  {
+    const r=feast.getBoundingClientRect();
+    if(r.bottom>0&&r.top<vh){
+      const p=clamp(-r.top/(r.height-vh),0,1), e=reduce?1:easeInOut(clamp(p/.55,0,1));
+      const ix=big?30:9, iy=big?25:22;
+      feastFrame.style.setProperty('--ix',(ix*(1-e)).toFixed(2)+'%');
+      feastFrame.style.setProperty('--iy',(iy*(1-e)).toFixed(2)+'%');
+      feastFrame.style.setProperty('--rad',(34*(1-e)).toFixed(1)+'px');
+      feastFrame.style.setProperty('--z',(1.28-.28*e).toFixed(3));
+      feastFrame.style.setProperty('--shade',(e*.95).toFixed(2));
+      feast.classList.toggle('is-open',p>.62||reduce);
+    }
+  }
+
+  /* ribbon: scroll-linked drift */
+  {
+    const r=ribbon.getBoundingClientRect();
+    if(r.bottom>0&&r.top<vh&&!reduce){
+      const p=clamp((vh-r.top)/(vh+r.height),0,1);
+      ribbonRows.forEach(row=>{const d=+row.dataset.ribbon;row.style.transform=`translate3d(${d>0?-p*vw*.65:(-1.35+p*.65)*vw}px,0,0)`});
+    }
+  }
+
+  /* footer reveal */
+  if(!footer.classList.contains('is-in')){
+    const on=revealFooter?(y+vh>docH-footer.offsetHeight*.8):(footer.getBoundingClientRect().top<vh*.85);
+    if(on)footer.classList.add('is-in');
+  }
+}
+const req=()=>{if(!ticking){ticking=true;requestAnimationFrame(frame)}};
+addEventListener('scroll',req,{passive:true});
+let rz; addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{layoutAll();sTarget=clamp(sTarget,0,maxScroll());frame()},140)});
+addEventListener('load',()=>{layoutAll();frame()});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{layoutAll();frame()});
+
+/* ---------------------------------------------------------------
+   10. MENU TABS
+   --------------------------------------------------------------- */
+const tabs=$$('.tab'), panels=$$('.panel'), tabInd=$('#tabInd'), menuImgs=$$('.menu__img .media');
+let tabCur=0;
+function moveInd(){const t=tabs[tabCur];if(!t)return;tabInd.style.width=t.offsetWidth+'px';tabInd.style.transform=`translateX(${t.offsetLeft}px)`}
+function selectTab(i,focus){
+  tabCur=i;
+  tabs.forEach((t,k)=>{t.setAttribute('aria-selected',k===i);t.tabIndex=k===i?0:-1});
+  panels.forEach((p,k)=>{p.hidden=k!==i;p.classList.toggle('is-active',k===i)});
+  menuImgs.forEach((m,k)=>m.classList.toggle('is-active',k===i));
+  moveInd(); if(focus)tabs[i].focus();
+}
+tabs.forEach((t,i)=>{
+  t.addEventListener('click',()=>selectTab(i));
+  t.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')selectTab((i+1)%tabs.length,true);
+    if(e.key==='ArrowLeft')selectTab((i-1+tabs.length)%tabs.length,true);
+  });
+});
+menuImgs[0]&&menuImgs[0].classList.add('is-active');
+
+/* ---------------------------------------------------------------
+   11. RESERVATION FORM
+   --------------------------------------------------------------- */
+const form=$('#resForm'), res=$('#res'), rDate=$('#rDate'), rName=$('#rName'), rContact=$('#rContact'), gOut=$('#gOut'), note=$('#resNote');
+let guests=2, noteKey='', dateKey='', sumData=null;
+const pad=v=>String(v).padStart(2,'0'), today=new Date();
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+rDate.min=rDate.value=iso(today);
+function renderNote(){note.textContent=noteKey?T(noteKey):''}
+const setGuests=v=>{guests=clamp(v,1,12);gOut.textContent=guests;noteKey=guests>8?'e_over8':'';renderNote()};
+$('#gMinus').addEventListener('click',()=>setGuests(guests-1));
+$('#gPlus').addEventListener('click',()=>setGuests(guests+1));
+const chips=$$('.chip');
+chips.forEach(c=>c.addEventListener('click',()=>chips.forEach(o=>o.setAttribute('aria-checked',o===c))));
+[rDate,rName,rContact].forEach(i=>i.addEventListener('input',()=>i.closest('.fld').classList.remove('err')));
+function guestWord(n){
+  if(lang==='en')return T(n>1?'g2':'g1').replace('{n}',n);
+  return T(n===1?'g1':n===2?'g2':n<5?'g3':'g5').replace('{n}',n);
+}
+function renderSum(){
+  if(!sumData)return;
+  let ds=sumData.d.toLocaleDateString(lang==='sl'?'sl-SI':'en-GB',{weekday:'long',day:'numeric',month:'long'});
+  if(lang==='sl')ds=ds.charAt(0).toUpperCase()+ds.slice(1);
+  $('#resSum').textContent=`${guestWord(sumData.g)} · ${ds} · ${sumData.time}`;
+}
+form.addEventListener('submit',e=>{
+  e.preventDefault(); let ok=true, first=null;
+  const flag=(inp,bad,key)=>{const f=inp.closest('.fld');f.classList.toggle('err',bad);if(bad){ok=false;first=first||inp;if(key){dateKey=key;f.querySelector('.msg').textContent=T(key)}}};
+  const d=rDate.value?new Date(rDate.value+'T12:00'):null;
+  flag(rDate,!d||rDate.value<rDate.min||(d&&d.getDay()===1),!d?'e_date':d.getDay()===1?'e_mon':'e_past');
+  flag(rName,rName.value.trim().length<2);
+  const c=rContact.value.trim();
+  flag(rContact,!(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c)||/^\+?[\d\s()-]{7,}$/.test(c)));
+  if(guests>8){ok=false;noteKey='e_over8';renderNote()}
+  if(!ok){first&&first.focus();return}
+  /* TODO: send { date, time, guests, name, contact, note } to your booking system here (fetch/POST). */
+  const time=(chips.find(x=>x.getAttribute('aria-checked')==='true')||chips[2]).textContent;
+  sumData={g:guests,d,time}; renderSum();
+  res.classList.add('is-sent');
+});
+$('#resAgain').addEventListener('click',()=>{res.classList.remove('is-sent');form.reset();rDate.value=iso(today);sumData=null;setGuests(2)});
+
+/* newsletter */
+let newsKey='';
+function renderNews(){$('#newsThanks').textContent=newsKey?T(newsKey):''}
+$('#newsForm').addEventListener('submit',e=>{
+  e.preventDefault(); const i=$('#nEmail');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(i.value.trim())){newsKey='news_err';renderNews();return}
+  newsKey='news_ok'; renderNews(); i.value='';
+});
+
+/* ---------------------------------------------------------------
+   12. OPENING HOURS  (computed in Ljubljana time)
+   --------------------------------------------------------------- */
+function renderHours(){
+  const SCHED={0:[9,17],1:null,2:[8,23],3:[8,23],4:[8,23],5:[8,24],6:[8,24]};
+  let wd,h;
+  try{
+    const o={};new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Ljubljana',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date()).forEach(p=>o[p.type]=p.value);
+    wd={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[o.weekday]; h=(+o.hour%24)+ +o.minute/60;
+  }catch(_){const d=new Date();wd=d.getDay();h=d.getHours()+d.getMinutes()/60}
+  const f=v=>(v===24?'00':pad(v))+':00', s=SCHED[wd]; let open=false, text='';
+  if(s&&h>=s[0]&&h<s[1]){open=true;text=T('st_open').replace('{t}',f(s[1]))}
+  else if(s&&h<s[0])text=T('st_today').replace('{t}',f(s[0]));
+  else for(let i=1;i<=7;i++){const dd=(wd+i)%7;if(SCHED[dd]){text=i===1?T('st_tom').replace('{t}',f(SCHED[dd][0])):T('st_day').replace('{d}',DAYS[lang][dd]).replace('{t}',f(SCHED[dd][0]));break}}
+  $$('.js-status').forEach(el=>el.textContent=text);
+  $$('.js-dot').forEach(el=>el.classList.toggle('is-closed',!open));
+  $$('.hours tr').forEach(tr=>tr.classList.toggle('is-today',tr.dataset.days.split(',').map(Number).includes(wd)));
+}
+
+/* ---------------------------------------------------------------
+   12b. LANGUAGE SWITCHING  (instant, no reload; animations untouched)
+   --------------------------------------------------------------- */
+const langBtns=$$('.lang__b'), metaDesc=$('meta[name="description"]');
+function applyLang(l){
+  lang=l; root.lang=l; const D=I18N[l];
+  $$('[data-i18n]').forEach(el=>{
+    const v=D[el.dataset.i18n]; if(v==null)return;
+    el.innerHTML=v;
+    if(el.hasAttribute('data-t'))el.setAttribute('data-t',el.textContent.trim());
+    if(el.hasAttribute('data-words')||el===feastTitle)split(el);
+    if(el===scrubEl){split(el,'scrub');scrubWords=$$('.sw',el)}
+  });
+  [['aria','aria-label'],['ph','placeholder']].forEach(([k,attr])=>$$('[data-i18n-'+k+']').forEach(el=>{const v=D[el.getAttribute('data-i18n-'+k)];if(v!=null)el.setAttribute(attr,v)}));
+  $$('[data-i18n-alt]').forEach(el=>{const v=D[el.getAttribute('data-i18n-alt')];if(v==null)return;el.dataset.alt=v;if(el.getAttribute('role')==='img')el.setAttribute('aria-label',v);const im=$('img',el);if(im)im.alt=v});
+  document.title=D.title; if(metaDesc)metaDesc.setAttribute('content',D.desc);
+  burger.setAttribute('aria-label',T(menuOpen?'burger_close':'burger_open'));
+  const ef=rDate.closest('.fld'); if(ef.classList.contains('err')&&dateKey)ef.querySelector('.msg').textContent=T(dateKey);
+  renderNote(); renderSum(); renderNews(); renderHours();
+  langBtns.forEach(b=>{const on=b.dataset.lang===l;b.classList.toggle('is-active',on);b.setAttribute('aria-pressed',on)});
+}
+function setLang(l,save){
+  if(l===lang)return;
+  applyLang(l);
+  if(save){try{localStorage.setItem('sorrel-lang',l)}catch(_){}}
+  layoutAll(); frame();            // text length changes → re-measure pinned sections
+}
+langBtns.forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang,true)));
+
+/* ---------------------------------------------------------------
+   13. INIT
+   --------------------------------------------------------------- */
+renderHours();
+try{if(localStorage.getItem('sorrel-lang')==='en')applyLang('en')}catch(_){}
+layoutAll(); frame();
+})();
+</script>
+</body>
+</html>
