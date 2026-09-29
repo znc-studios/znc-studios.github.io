@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MIZARSTVO KRALJ – Pohištvo po meri</title>
+<meta name="description" content="Mizarstvo Kralj – ročno izdelano pohištvo po meri: kuhinje, garderobne omare, vrata in celovite notranje ureditve. Konceptni projekt.">
+<meta name="theme-color" content="#faf7f1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23241f19'/%3E%3Cpath d='M32 14l14 8v18l-14 8-14-8V22z' fill='none' stroke='%23b17b84' stroke-width='2.4'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23b17b84'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>document.documentElement.className='js'</script>
+<style>
+/* ==========================================================================
+   MIZARSTVO KRALJ — konceptni demo projekt
+   1. Tokeni    5. Hero        9.  Kontakt
+   2. Osnove    6. Projekt     10. Noga
+   3. Glava     7. O nas       11. Animacije
+   4. Meni      8. Proces      12. Odzivnost
+   ========================================================================== */
+
+:root{
+  --ink:#241f19; --charcoal:#171310; --walnut:#241b14; --walnut-2:#2f2419;
+  --brass:#7c3341; --brass-soft:#b17b84; --brass-dim:#5c2530;
+  --cream:#f3ead9; --ivory:#f1ebe0; --paper:#faf7f1;
+  --line-dark:rgba(243,234,217,.16); --line-light:rgba(36,31,25,.13);
+  --text-dark:#241f19; --text-dark-mut:#6d6152;
+  --text-light:#f3ead9; --text-light-mut:rgba(243,234,217,.7);
+  --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1); --ease-out:cubic-bezier(.16,1,.3,1);
+  --gut:clamp(20px,5vw,72px); --wrap:1280px; --sp:clamp(80px,10vw,148px); --r:6px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--text-dark);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+h1,h2,h3,p,figure,dl,dd{margin:0}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.01em;line-height:1.08}
+em{font-style:italic}
+a{color:inherit}
+ul{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+.wrap{width:min(var(--wrap),100% - var(--gut) * 2);margin-inline:auto}
+.sec{padding-block:var(--sp)}
+.sec--ivory{background:var(--ivory)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+::selection{background:var(--brass);color:var(--ink)}
+.skip{position:fixed;top:10px;left:10px;z-index:300;padding:10px 16px;background:var(--cream);color:var(--ink);transform:translateY(-160%);transition:transform .3s var(--ease);text-decoration:none;border-radius:var(--r)}
+.skip:focus{transform:none}
+
+/* eyebrow */
+.eb{display:flex;align-items:center;gap:12px;margin:0 0 18px;font:500 12px/1.4 var(--sans);letter-spacing:.28em;text-transform:uppercase;color:var(--brass)}
+.eb::after{content:"";width:34px;height:1px;background:currentColor;opacity:.55}
+.lead{max-width:44ch;margin-top:20px;font-size:1.08rem;color:var(--text-dark-mut)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:14px;padding:16px 30px;border-radius:999px;border:1px solid transparent;font:500 14px/1 var(--sans);letter-spacing:.02em;text-decoration:none;transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),transform .35s var(--ease)}
+.btn svg{width:16px;height:16px;transition:transform .4s var(--ease-out)}
+.btn:hover svg{transform:translateX(4px)}
+.btn:active{transform:scale(.97)}
+.btn--brass{background:var(--brass);color:var(--ink)}
+.btn--brass:hover{background:var(--brass-soft)}
+.btn--line{border-color:rgba(243,234,217,.5);color:var(--text-light)}
+.btn--line:hover{background:var(--text-light);color:var(--ink)}
+.btn--dark{background:var(--ink);color:var(--cream)}
+.btn--dark:hover{background:var(--walnut)}
+
+/* ==========================================================================
+   3. GLAVA
+   ========================================================================== */
+.hdr{position:fixed;inset:0 0 auto 0;z-index:100;padding-block:22px;transition:padding .5s var(--ease)}
+.hdr::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(14,12,10,.6),rgba(14,12,10,.05));-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:background .5s var(--ease),backdrop-filter .5s}
+.hdr.is-stuck{padding-block:13px}
+.hdr.is-stuck::before{background:rgba(14,12,10,.92);border-bottom:1px solid var(--line-dark);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.hdr__in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px}
+.brand{display:inline-flex;align-items:center;gap:12px;justify-self:start;color:var(--text-light);text-decoration:none}
+.brand svg{width:30px;height:30px;stroke:var(--brass-soft);flex:none}
+.brand__t{display:grid;line-height:1}
+.brand__t b{font-family:var(--serif);font-size:1.5rem;font-weight:400;letter-spacing:.06em}
+.brand__t span{margin-top:4px;font:500 9.5px/1 var(--sans);letter-spacing:.4em;color:var(--text-light-mut)}
+.nav{display:none}
+.nav__list{display:flex;gap:clamp(22px,3vw,42px)}
+.nav__list a{position:relative;padding-block:6px;font-size:14.5px;text-decoration:none;color:var(--text-light)}
+.nav__list a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--brass-soft);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease-out)}
+.nav__list a:hover::after{transform:scaleX(1);transform-origin:left}
+.hdr__r{display:flex;align-items:center;gap:14px;justify-self:end}
+.burger{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(243,234,217,.4);border-radius:50%;color:var(--text-light)}
+.burger i{display:block;width:16px;height:1.4px;background:currentColor;position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;width:100%;height:100%;background:currentColor;transition:transform .4s var(--ease)}
+.burger i::before{top:-5px}.burger i::after{top:5px}
+.burger[aria-expanded="true"] i{background:transparent}
+.burger[aria-expanded="true"] i::before{transform:translateY(5px) rotate(45deg)}
+.burger[aria-expanded="true"] i::after{transform:translateY(-5px) rotate(-45deg)}
+@media(min-width:940px){.nav{display:block}.hdr__r .burger{display:none}}
+
+/* mobile menu */
+.mnav{position:fixed;inset:0;z-index:99;display:grid;align-content:center;gap:8px;padding:0 var(--gut);background:var(--ink);visibility:hidden;opacity:0;transition:opacity .4s var(--ease),visibility 0s linear .4s}
+.mnav.is-open{visibility:visible;opacity:1;transition-delay:0s}
+.mnav a{font-family:var(--serif);font-size:clamp(2rem,9vw,3.2rem);font-weight:400;color:var(--text-light);text-decoration:none;padding-block:12px;border-bottom:1px solid var(--line-dark);opacity:0;transform:translateY(18px);transition:opacity .5s var(--ease-out),transform .6s var(--ease-out)}
+.mnav.is-open a{opacity:1;transform:none}
+.mnav.is-open a:nth-child(1){transition-delay:.06s}.mnav.is-open a:nth-child(2){transition-delay:.11s}
+.mnav.is-open a:nth-child(3){transition-delay:.16s}.mnav.is-open a:nth-child(4){transition-delay:.21s}
+.mnav.is-open a:nth-child(5){transition-delay:.26s}
+
+/* ==========================================================================
+   5. HERO
+   ========================================================================== */
+.hero{position:relative;isolation:isolate;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;background:var(--ink)}
+.hero__bg{position:absolute;inset:0;z-index:-2}
+.hero__bg img{width:100%;height:100%;object-fit:cover;object-position:50% 60%;animation:kenburns 16s var(--ease-out) forwards}
+@keyframes kenburns{from{transform:scale(1.12)}to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(250,247,241,.95) 0%,rgba(250,247,241,.58) 24%,rgba(250,247,241,0) 48%,rgba(36,31,25,.28) 100%)}
+.hero__in{padding-bottom:clamp(56px,9vw,110px);width:100%}
+.hero__lines{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.hero__lines span{display:block;transform:translateY(110%);animation:lineUp 1s var(--ease-out) forwards}
+.hero__lines:nth-child(1) span{animation-delay:.15s}.hero__lines:nth-child(2) span{animation-delay:.28s}
+@keyframes lineUp{to{transform:none}}
+.hero h1{color:var(--text-dark);font-size:clamp(2.6rem,6vw,5rem);font-weight:300}
+.hero h1 em{color:var(--brass-dim)}
+.hero .lead{color:var(--text-dark-mut);margin-top:26px}
+.hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px}
+.hero__cta .btn--line{border-color:rgba(36,31,25,.35);color:var(--text-dark)}
+.hero__cta .btn--line:hover{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.hero__scroll{position:absolute;right:var(--gut);bottom:34px;display:none;align-items:center;gap:10px;color:var(--text-dark-mut);font-size:13px}
+.hero__scroll i{width:1px;height:34px;background:currentColor;position:relative;overflow:hidden}
+.hero__scroll i::after{content:"";position:absolute;inset:0;background:var(--brass-soft);transform:translateY(-100%);animation:scrollLine 2.2s var(--ease) infinite}
+@keyframes scrollLine{to{transform:translateY(100%)}}
+@media(min-width:760px){.hero__scroll{display:flex}}
+
+/* ==========================================================================
+   6. IZBRAN PROJEKT
+   ========================================================================== */
+.feat{display:grid;gap:clamp(36px,6vw,64px);grid-template-columns:minmax(0,1fr)}
+.feat__media{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:var(--r)}
+.feat__media img{width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease-out)}
+.feat:hover .feat__media img{transform:scale(1.045)}
+.feat__txt{align-self:center}
+.feat__name{margin-top:6px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dark-mut)}
+.feat h2{margin-top:18px;font-size:clamp(1.9rem,3.4vw,2.8rem)}
+.feat p.desc{margin-top:20px;max-width:46ch;color:var(--text-dark-mut);font-size:1.02rem;line-height:1.75}
+.feat .btn{margin-top:30px}
+@media(min-width:900px){.feat{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center}}
+
+/* ==========================================================================
+   7. O NAS
+   ========================================================================== */
+.about{background:var(--ivory)}
+.about__grid{display:grid;gap:clamp(40px,6vw,80px);grid-template-columns:minmax(0,1fr)}
+.about__media{aspect-ratio:4/5;overflow:hidden;border-radius:var(--r)}
+.about__media img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.about h2{font-size:clamp(2rem,3.6vw,3rem)}
+.about p.b{max-width:50ch;margin-top:22px;color:var(--text-dark-mut);line-height:1.8}
+.about p.b + p.b{margin-top:14px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:44px;border-top:1px solid var(--line-light);padding-top:28px}
+.facts b{display:block;font-family:var(--serif);font-size:clamp(1.7rem,3vw,2.4rem);color:var(--brass-dim)}
+.facts span{display:block;margin-top:6px;font-size:13px;color:var(--text-dark-mut)}
+@media(min-width:900px){.about__grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center}}
+
+/* ==========================================================================
+   8. PROCES
+   ========================================================================== */
+.steps{display:grid;gap:0;grid-template-columns:minmax(0,1fr);margin-top:56px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:22px;padding-block:26px;border-top:1px solid var(--line-light)}
+.step:last-child{border-bottom:1px solid var(--line-light)}
+.step__n{font-family:var(--serif);font-size:1.8rem;color:var(--brass-dim)}
+.step h3{font-size:1.25rem;color:var(--text-dark)}
+.step p{margin-top:8px;max-width:44ch;color:var(--text-dark-mut);font-size:.98rem}
+@media(min-width:820px){.steps{grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line-light)}
+  .step{grid-template-columns:minmax(0,1fr);border-top:0;padding:0 22px 0 0;border-right:1px solid var(--line-light)}
+  .step:last-child{border-bottom:0;border-right:0;padding-right:0}}
+
+/* ==========================================================================
+   9. PROJEKTI (galerija)
+   ========================================================================== */
+.gal{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+.gal__item{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:var(--r)}
+.gal__item img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease-out)}
+.gal__item:hover img{transform:scale(1.06)}
+.gal__item::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,8,6,.78) 0%,rgba(10,8,6,0) 55%)}
+.gal__cap{position:absolute;left:20px;right:20px;bottom:18px;z-index:2;color:#fff}
+.gal__cap b{display:block;font-family:var(--serif);font-size:1.2rem;font-weight:400}
+.gal__cap span{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-soft)}
+@media(min-width:700px){.gal{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1080px){.gal{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* ==========================================================================
+   10. KONTAKT
+   ========================================================================== */
+.ct__grid{display:grid;gap:clamp(44px,7vw,90px);grid-template-columns:minmax(0,1fr)}
+.ct__list{margin-top:36px;border-top:1px solid var(--line-light)}
+.ct__list li{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--line-light)}
+.ct__list dt{font:500 11px/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text-dark-mut)}
+.ct__list dd a{text-decoration:none}
+.ct__list dd a:hover{color:var(--brass-dim)}
+.note{margin-top:26px;padding:16px 18px;border:1px solid var(--line-light);border-radius:var(--r);font-size:13.5px;color:var(--text-dark-mut);line-height:1.6}
+.form{display:grid;gap:20px;background:#fff;border:1px solid var(--line-light);border-radius:var(--r);padding:clamp(24px,3vw,36px)}
+.frow{display:grid;gap:20px;grid-template-columns:minmax(0,1fr)}
+.fld{display:grid;gap:8px}
+.fld label{font:500 11px/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text-dark-mut)}
+.fld input,.fld textarea{width:100%;padding:13px 4px;background:transparent;border:0;border-bottom:1px solid var(--line-light);color:var(--text-dark);font:400 1.02rem var(--sans);outline:none;transition:border-color .3s var(--ease)}
+.fld textarea{min-height:110px;resize:vertical}
+.fld input:focus,.fld textarea:focus{border-color:var(--brass-dim)}
+.fld__e{min-height:1.1em;font-size:12.5px;color:#c1522f}
+.hp{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden}
+.form__status{min-height:1.3em;font-size:14px;color:var(--brass-dim)}
+@media(min-width:600px){.frow{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.ct__grid{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}}
+
+/* ==========================================================================
+   11. NOGA
+   ========================================================================== */
+.ft{padding:56px 0 30px;background:var(--ivory);color:var(--text-dark-mut);border-top:1px solid var(--line-light)}
+.ft__top{display:grid;gap:28px;grid-template-columns:minmax(0,1fr);padding-bottom:30px;border-bottom:1px solid var(--line-light)}
+.ft__brand{display:inline-flex;align-items:center;gap:12px;color:var(--text-dark);text-decoration:none}
+.ft__brand svg{width:24px;height:24px;stroke:var(--brass-dim)}
+.ft__brand b{font-family:var(--serif);font-size:1.3rem;font-weight:400;letter-spacing:.05em}
+.ft__nav{display:flex;flex-wrap:wrap;gap:22px}
+.ft__nav a{font-size:14px;text-decoration:none}
+.ft__nav a:hover{color:var(--text-dark)}
+.ft__disc{max-width:64ch;font-size:12.5px;line-height:1.7;margin-top:22px;color:rgba(36,31,25,.55)}
+.ft__bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:22px;font-size:12.5px}
+@media(min-width:760px){.ft__top{grid-template-columns:auto 1fr;align-items:center}}
+
+/* ==========================================================================
+   12. ANIMACIJE + ODZIVNOST
+   ========================================================================== */
+.js [data-rv]{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease-out) var(--d,0ms),transform 1s var(--ease-out) var(--d,0ms)}
+.js [data-rv].in{opacity:1;transform:none}
+
+@media(max-width:939px){
+  .hero h1{font-size:clamp(2.2rem,9vw,3.2rem)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  .js [data-rv]{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#glavno">Preskoči na vsebino</a>
+
+<header class="hdr" data-hdr>
+  <div class="wrap hdr__in">
+    <a class="brand" href="#domov">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 14l14 8v18l-14 8-14-8V22z" fill="none" stroke-width="2.2"/><circle cx="32" cy="32" r="3.5" fill="currentColor" stroke="none"/></svg>
+      <span class="brand__t"><b>KRALJ</b><span>MIZARSTVO</span></span>
+    </a>
+    <nav class="nav" aria-label="Glavna navigacija">
+      <ul class="nav__list">
+        <li><a href="#domov">Domov</a></li>
+        <li><a href="#o-nas">O nas</a></li>
+        <li><a href="#proces">Proces</a></li>
+        <li><a href="#projekti">Projekti</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+    </nav>
+    <div class="hdr__r">
+      <a class="btn btn--line" href="#kontakt" style="display:none" data-hdr-cta>Povprašajte <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Odpri meni"><i></i></button>
+    </div>
+  </div>
+</header>
+
+<nav class="mnav" id="mnav" aria-label="Meni" inert>
+  <a href="#domov">Domov</a>
+  <a href="#o-nas">O nas</a>
+  <a href="#proces">Proces</a>
+  <a href="#projekti">Projekti</a>
+  <a href="#kontakt">Kontakt</a>
+</nav>
+
+<main id="glavno">
+
+<section class="hero" id="domov" aria-label="Naslovnica">
+  <div class="hero__bg"><img src="assets/kralj-hero.jpg" alt="Svetla kuhinja po meri iz lesa hrasta z osrednjim otokom" fetchpriority="high"></div>
+  <div class="wrap hero__in">
+    <p class="eb" style="color:var(--brass-dim)">Mizarstvo po meri</p>
+    <h1>
+      <span class="hero__lines"><span>Les, oblikovan</span></span>
+      <span class="hero__lines"><span>po <em>vaši meri.</em></span></span>
+    </h1>
+    <p class="lead">Že vrsto let izdelujemo pohištvo, ki združuje trdnost lesa, natančnost obrtnika in željo naročnika po nečem edinstvenem — od kuhinj do celovitih notranjih ureditev.</p>
+    <div class="hero__cta">
+      <a class="btn btn--brass" href="#projekti">Oglejte si projekte <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn--line" href="#kontakt">Povprašajte za ponudbo</a>
+    </div>
+  </div>
+  <a class="hero__scroll" href="#izbran-projekt" aria-label="Pomakni se navzdol"><i></i>Drsi</a>
+</section>
+
+<section class="sec" id="izbran-projekt" aria-labelledby="h-feat">
+  <div class="wrap feat" data-rv>
+    <figure class="feat__media">
+      <img src="assets/kralj-featured.jpg" alt="Zaobljena vgrajena omara iz svetlega lesa v vhodnem hodniku">
+    </figure>
+    <div class="feat__txt">
+      <p class="eb">Izbran projekt</p>
+      <p class="feat__name">Projekt · Demo lokacija</p>
+      <h2 id="h-feat">Vgradna omara, ki oblikuje prostor že ob vstopu.</h2>
+      <p class="desc">Zaobljena vgrajena omara iz svetlega hrasta spremlja hodnik od vhoda naprej. Brez vidnih ročajev, z mehko posredno osvetlitvijo in zaobljenimi robovi, ki mehčajo sicer strog geometrijski prostor.</p>
+      <a class="btn btn--dark" href="#projekti">Poglejte več projektov <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec about" id="o-nas" aria-labelledby="h-about">
+  <div class="wrap about__grid">
+    <figure class="about__media" data-rv>
+      <img src="assets/kralj-about.jpg" alt="Mizar drži leseno desko v osvetljeni delavnici">
+    </figure>
+    <div data-rv style="--d:.1s">
+      <p class="eb">Kdo smo</p>
+      <h2 id="h-about">Mizarstvo, ki mu zaupate generacije.</h2>
+      <p class="b">Smo manjša mizarska delavnica, ki pohištvo izdeluje ročno in po meri — od prve skice do zadnjega vijaka. Nič od tega ni serijsko: vsak kos nastane za natanko določen prostor in naročnika.</p>
+      <p class="b">Vsak projekt vodimo osebno, od izbire lesa in okovja do montaže na domu, tako da končni rezultat ustreza natanko vašemu prostoru in načinu življenja.</p>
+      <dl class="facts">
+        <div><b>15+</b><span>let izkušenj</span></div>
+        <div><b>100%</b><span>pohištvo po meri</span></div>
+        <div><b>Ročno</b><span>izdelano v delavnici</span></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--ivory" id="proces" aria-labelledby="h-proc">
+  <div class="wrap">
+    <p class="eb">Kako poteka</p>
+    <h2 id="h-proc" style="font-size:clamp(2rem,3.6vw,3rem)">Od ideje do montaže.</h2>
+    <ol class="steps">
+      <li class="step" data-rv><span class="step__n">01</span><div><h3>Ogled in meritve</h3><p>Obiščemo vaš prostor in vzamemo natančne mere na terenu.</p></div></li>
+      <li class="step" data-rv style="--d:.06s"><span class="step__n">02</span><div><h3>Zasnova in 3D izris</h3><p>Skupaj izberemo obliko, razporeditev in videz pohištva.</p></div></li>
+      <li class="step" data-rv style="--d:.12s"><span class="step__n">03</span><div><h3>Izbira materialov</h3><p>Svetujemo pri izbiri lesa, barv, površin in okovja.</p></div></li>
+      <li class="step" data-rv style="--d:.18s"><span class="step__n">04</span><div><h3>Izdelava</h3><p>Pohištvo ročno izdelamo v naši delavnici, korak za korakom.</p></div></li>
+      <li class="step" data-rv style="--d:.24s"><span class="step__n">05</span><div><h3>Montaža</h3><p>Izdelek namestimo na mestu in preverimo vsak detajl.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="projekti" aria-labelledby="h-proj">
+  <div class="wrap">
+    <p class="eb">Izbrana dela</p>
+    <h2 id="h-proj" style="font-size:clamp(2rem,3.6vw,3rem)">Nekaj naših projektov.</h2>
+    <div class="gal" style="margin-top:48px">
+      <figure class="gal__item" data-rv>
+        <img src="assets/kralj-featured.jpg" alt="Zaobljena vgrajena omara iz svetlega lesa">
+        <figcaption class="gal__cap"><span>Vhodna omara</span><b>Demo lokacija</b></figcaption>
+      </figure>
+      <figure class="gal__item" data-rv style="--d:.08s">
+        <img src="assets/kralj-gallery-1.jpg" alt="Garderobna omara po meri iz svetlega lesa">
+        <figcaption class="gal__cap"><span>Garderobna omara</span><b>Demo lokacija</b></figcaption>
+      </figure>
+      <figure class="gal__item" data-rv style="--d:.16s">
+        <img src="assets/kralj-gallery-2.jpg" alt="Notranja vrata iz orehovega lesa">
+        <figcaption class="gal__cap"><span>Notranja vrata</span><b>Demo lokacija</b></figcaption>
+      </figure>
+      <figure class="gal__item" data-rv>
+        <img src="assets/kralj-gallery-3.jpg" alt="Spalnica z leseno oblogo po meri">
+        <figcaption class="gal__cap"><span>Spalnica</span><b>Demo lokacija</b></figcaption>
+      </figure>
+      <figure class="gal__item" data-rv style="--d:.08s">
+        <img src="assets/kralj-about.jpg" alt="Mizar pri delu v delavnici">
+        <figcaption class="gal__cap"><span>V delavnici</span><b>Izdelava po meri</b></figcaption>
+      </figure>
+      <figure class="gal__item" data-rv style="--d:.16s">
+        <img src="assets/kralj-hero.jpg" alt="Svetla kuhinja po meri z osrednjim otokom">
+        <figcaption class="gal__cap"><span>Kuhinja</span><b>Demo lokacija</b></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--ivory" id="kontakt" aria-labelledby="h-ct">
+  <div class="wrap ct__grid">
+    <div data-rv>
+      <p class="eb">Kontakt</p>
+      <h2 id="h-ct" style="font-size:clamp(2rem,3.6vw,3rem)">Povejte nam, kaj načrtujete.</h2>
+      <p class="lead">Opišite prostor in željo — odgovorimo v najkrajšem možnem času in se dogovorimo za ogled.</p>
+      <dl class="ct__list">
+        <li><dt>Podjetje</dt><dd>Mizarstvo Kralj (demo)</dd></li>
+        <li><dt>Telefon</dt><dd><a href="tel:+38600000000">+386 00 000 000</a></dd></li>
+        <li><dt>E-pošta</dt><dd><a href="mailto:info@demo.si">info@demo.si</a></dd></li>
+        <li><dt>Naslov</dt><dd>Demo naslov, Demo mesto</dd></li>
+      </dl>
+      <p class="note">Demo/konceptni projekt: MIZARSTVO KRALJ je izmišljeno podjetje, ustvarjeno za prikaz spletnega oblikovanja. Ta stran ni povezana z nobenim resničnim mizarstvom, obrazec spodaj pa ne pošilja podatkov nikamor.</p>
+    </div>
+    <form class="form" id="cform" data-rv style="--d:.1s" novalidate>
+      <div class="hp" aria-hidden="true"><label for="k-web">Spletna stran</label><input id="k-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <div class="frow">
+        <div class="fld"><label for="k-name">Ime in priimek</label><input id="k-name" name="name" type="text" autocomplete="name" required><p class="fld__e" id="ke-name" role="alert"></p></div>
+        <div class="fld"><label for="k-mail">E-pošta</label><input id="k-mail" name="email" type="email" autocomplete="email" required><p class="fld__e" id="ke-mail" role="alert"></p></div>
+      </div>
+      <div class="fld"><label for="k-phone">Telefon <span style="text-transform:none;letter-spacing:0">(neobvezno)</span></label><input id="k-phone" name="phone" type="tel" autocomplete="tel"></div>
+      <div class="fld"><label for="k-msg">Opis projekta</label><textarea id="k-msg" name="message" required></textarea><p class="fld__e" id="ke-msg" role="alert"></p></div>
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <button class="btn btn--brass" type="submit">Pošljite povpraševanje <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+        <p class="form__status" id="cstatus" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft__top">
+      <a class="ft__brand" href="#domov">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 14l14 8v18l-14 8-14-8V22z" fill="none" stroke-width="2.2"/></svg>
+        <b>KRALJ MIZARSTVO</b>
+      </a>
+      <nav class="ft__nav" aria-label="Noga">
+        <a href="#o-nas">O nas</a>
+        <a href="#proces">Proces</a>
+        <a href="#projekti">Projekti</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+    <p class="ft__disc">Demo / konceptni projekt, izdelan za prikaz spletnega oblikovanja. MIZARSTVO KRALJ je izmišljeno podjetje — vsa imena, projekti in kontaktni podatki na tej strani so izmišljeni, obrazec ne pošilja podatkov nikamor.</p>
+    <div class="ft__bottom">
+      <span>© <span id="yr">2026</span> Mizarstvo Kralj (demo)</span>
+      <span>Pohištvo po meri · Slovenija</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+'use strict';
+const $ = (s,r=document) => r.querySelector(s);
+const $$ = (s,r=document) => Array.from(r.querySelectorAll(s));
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+$('#yr').textContent = new Date().getFullYear();
+
+/* header scroll state */
+const hdr = $('[data-hdr]'), hdrCta = $('[data-hdr-cta]');
+function onScroll(){
+  const stuck = window.scrollY > 8;
+  hdr.classList.toggle('is-stuck', stuck);
+  hdrCta.style.display = stuck ? 'inline-flex' : 'none';
+}
+document.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+/* mobile menu */
+const burger = $('.burger'), mnav = $('#mnav');
+let open = false;
+function setMenu(v){
+  open = v;
+  burger.setAttribute('aria-expanded', String(v));
+  mnav.classList.toggle('is-open', v);
+  if (v) mnav.removeAttribute('inert'); else mnav.setAttribute('inert','');
+  document.body.style.overflow = v ? 'hidden' : '';
+}
+burger.addEventListener('click', () => setMenu(!open));
+$$('a', mnav).forEach(a => a.addEventListener('click', () => setMenu(false)));
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && open) { setMenu(false); burger.focus(); } });
+
+/* reveal on scroll */
+const rvEls = $$('[data-rv]');
+if (reduceMotion.matches || !('IntersectionObserver' in window)) {
+  rvEls.forEach(e => e.classList.add('in'));
+} else {
+  const io = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+  }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+  rvEls.forEach(e => io.observe(e));
+}
+
+/* contact form — demo only, does not send anywhere */
+(function form(){
+  const f = $('#cform');
+  const fields = { name: $('#k-name'), mail: $('#k-mail'), msg: $('#k-msg') };
+  const err = { name: $('#ke-name'), mail: $('#ke-mail'), msg: $('#ke-msg') };
+  const status = $('#cstatus');
+
+  function show(k, msg){ err[k].textContent = msg || ''; fields[k].toggleAttribute('aria-invalid', !!msg); }
+  function check(){
+    show('name', fields.name.value.trim() ? '' : 'Vpišite svoje ime.');
+    show('mail', !fields.mail.value.trim() ? 'Vpišite e-pošto.' : (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(fields.mail.value) ? '' : 'E-pošta ne izgleda pravilno.'));
+    show('msg', fields.msg.value.trim() ? '' : 'Na kratko opišite projekt.');
+    return !err.name.textContent && !err.mail.textContent && !err.msg.textContent;
+  }
+  ['name','mail','msg'].forEach(k => fields[k].addEventListener('input', () => { if (err[k].textContent) show(k, ''); }));
+
+  f.addEventListener('submit', e => {
+    e.preventDefault();
+    if ($('#k-web').value.trim()) { status.textContent = 'Hvala! Vaše povpraševanje je bilo oddano.'; f.reset(); return; } // honeypot: silently no-op
+    if (!check()) { (fields.name.getAttribute('aria-invalid') ? fields.name : fields.mail.getAttribute('aria-invalid') ? fields.mail : fields.msg).focus(); return; }
+    status.textContent = 'Hvala! To je konceptni prikaz — povpraševanje ni bilo dejansko poslano.';
+    f.reset();
+  });
+})();
+})();
+</script>
+</body>
+</html>
